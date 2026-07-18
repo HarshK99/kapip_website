@@ -29,6 +29,22 @@ const config: Config = {
       },
       borderRadius: {
         card: "4px",
+        hero: "28px",
+      },
+      fontSize: {
+        "display-xl": [
+          "clamp(2.5rem, 2rem + 3vw, 4.25rem)",
+          { lineHeight: "1.05", letterSpacing: "-0.01em" },
+        ],
+        "display-l": [
+          "clamp(2rem, 1.6rem + 2vw, 3rem)",
+          { lineHeight: "1.08", letterSpacing: "-0.01em" },
+        ],
+        h2: ["clamp(1.5rem, 1.3rem + 1vw, 2rem)", { lineHeight: "1.15" }],
+        h3: ["clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem)", { lineHeight: "1.15" }],
+        body: ["1.0625rem", { lineHeight: "1.6" }],
+        small: ["0.9375rem", { lineHeight: "1.6" }],
+        "mono-eyebrow": ["0.75rem", { lineHeight: "1", letterSpacing: "0.12em" }],
       },
     },
   },

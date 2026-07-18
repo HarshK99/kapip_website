@@ -51,7 +51,10 @@ docs/                    PRD.md, DESIGN.md
 
 **Right-sized abstraction.** Extract on the 2nd use, not speculatively. No premature config systems. This is a small site.
 
-**Every phase ends clean.** No dead code, no unused imports, no commented-out blocks. `npm run lint` passes. `npm run build` succeeds (and produces `out/` on export). Commit after each phase.
+**Every phase ends clean.** No dead code, no unused imports, no commented-out blocks. `npm run lint` passes. Commit after each phase.
+
+## Running dev/build — ask first, every time
+Do not run `npm run dev` or `npm run build` on your own initiative — not to "verify," not to preview a change, not out of habit from earlier in the session. Ask before each one, every time, even mid-task. `npm run lint` is fine to run freely since it's just static analysis. If you want visual confirmation of a change, describe what you did and ask the user whether they'd like you to start the dev server or take screenshots — don't just do it.
 
 ## Content is dummy for now
 All copy and contact details in `data/` are clearly-labelled placeholders. The schema is the contract; real content arrives as an `.md` file and gets poured into the same typed shapes. Do not restructure the data layer to fit prettier copy — keep the schema stable so the swap stays mechanical. See `docs/PRD.md` → Content Checklist.
@@ -63,4 +66,4 @@ No sensitive internal data expected. Still: `data/services.ts` exposes only publ
 Precise, modern-minimal. Trust through restraint and typography, not ornament. One signature element only (the registration/allowance mark — see `docs/DESIGN.md`). Restrained motion. Avoid every legal-firm cliché: navy+gold serif, scales/gavel, stock handshakes, heavy shadows, gradient overload. If a change makes the site look more generic, it's wrong.
 
 ## Phase discipline
-One phase per session. Each phase: do the work → `npm run build` (verify) → `npm run lint` → commit. Phases: 0 Configure · 1 Shell · 2 Home · 3 Services (core feature) · 4 Content pages (About, Contact) · 5 Polish · 6 Deploy prep. Full prompts in `KICKOFF-PROMPT.md`.
+One phase per session. Each phase: do the work → `npm run lint` → ask before running `npm run build` → commit only if asked. Phases: 0 Configure · 1 Shell · 2 Home · 3 Services (core feature) · 4 Content pages (About, Contact) · 5 Polish · 6 Deploy prep. Full prompts in `KICKOFF-PROMPT.md`.

@@ -19,6 +19,7 @@ export type Site = {
     city: string;
     state: string;
     pincode: string;
+    country: string;
   };
   hours?: string;
   /** Web3Forms access key — public by design. DUMMY */
@@ -28,16 +29,17 @@ export type Site = {
 
 export const site: Site = {
   name: "KAP IP",
-  tagline: "Understand, protect, and manage your intellectual property.", // DUMMY
+  tagline: "Strategic patent and IP solutions for innovators worldwide.",
   phone: "+910000000000", // DUMMY — replace with real E.164 number
   whatsapp: "910000000000", // DUMMY — digits only, country code + number
-  email: "hello@example.com", // DUMMY
+  email: "hello@example.com", // DUMMY — awaiting real email
   address: {
-    line1: "000, Placeholder Chambers", // DUMMY
-    line2: "Sample Road", // DUMMY
-    city: "City", // DUMMY
-    state: "State", // DUMMY
-    pincode: "000000", // DUMMY
+    line1: "1402, A Block, Royal Aawas Tirupati",
+    line2: "Ahom Gaon, near Royal Global University, Betkuchi",
+    city: "Guwahati",
+    state: "Assam",
+    pincode: "781035",
+    country: "India",
   },
   hours: "Mon–Fri, 10:00–18:00 IST", // DUMMY
   web3formsKey: "REPLACE_WITH_WEB3FORMS_ACCESS_KEY", // DUMMY
@@ -56,7 +58,7 @@ export const whatsappHref = (message?: string) =>
 export const mailHref = () => `mailto:${site.email}`;
 export const formattedAddress = () => {
   const a = site.address;
-  return [a.line1, a.line2, `${a.city}, ${a.state} ${a.pincode}`]
+  return [a.line1, a.line2, `${a.city}, ${a.state} ${a.pincode}`, a.country]
     .filter(Boolean)
     .join(", ");
 };

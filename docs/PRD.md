@@ -18,7 +18,9 @@ Confirmed: **page per service, sub-services as sections within.**
 /                         Home
 /about                    The Firm
 /services                 Services overview (hub → 4 services)
-/services/patents         Patents      (subs: Search & Analytics, Drafting, Global Filing & Prosecution)
+/services/patents         Patents      (7 subs: Search & Analytics, Drafting, Global Filing &
+                                        Prosecution, Patent Intelligence Services, Patent Agent
+                                        Exam Training, AI Document Review, Patent Opposition)
 /services/trademarks      Trademarks   (subs TBD — schema ready, renders 0..n)
 /services/copyrights      Copyrights   (subs TBD)
 /services/designs         Designs / Industrial Designs (subs TBD)
@@ -31,8 +33,8 @@ Service pages are generated from `data/services.ts` via `generateStaticParams` �
 
 **Nav:** Home · About · Services (with dropdown/expand to the 4 on desktop; grouped in mobile menu) · Contact. Persistent WhatsApp affordance on mobile.
 
-### Promotion path (why subs are sections, not pages, for now)
-Each sub-service carries a `slug` and self-contained content in the data. Rendered today as a section inside its parent service page. When real copy makes a sub-service substantial enough to rank on its own, it can be promoted to `/services/patents/search-analytics` by adding a nested route that reads the same sub-service object — **zero data restructure**. Build for this; don't build it yet.
+### Promotion path (why subs are explorer items, not pages, for now)
+Each sub-service carries a `slug` and self-contained content in the data. Rendered today as an item in a sidebar + detail explorer within its parent service page (`SubServiceExplorer.tsx` — sidebar nav on the left, selected sub-service's content on the right). When real copy makes a sub-service substantial enough to rank on its own, it can be promoted to `/services/patents/search-analytics` by adding a nested route that reads the same sub-service object — **zero data restructure**. Build for this; don't build it yet.
 
 ## 4. Pages — what each must contain
 Keep every page composed of section components. No page holds raw markup.
@@ -43,7 +45,7 @@ Keep every page composed of section components. No page holds raw markup.
 
 **Services (hub)** — one line of framing + four `ServiceCard`s (title, one-line summary, sub-service count, link). This page is a directory, not an essay.
 
-**Service page (×4, templated)** — service hero (name, `plainIntro`, precise one-liner) · **sub-service sections** looped from data, each with plain intro + What we deliver / Scope / Process · a "how we engage" or process note if present · CTA to Contact. Trademarks/Copyrights/Designs render with 0 subs cleanly (show service-level content only) until subs are added.
+**Service page (×4, templated)** — service hero (name, `plainIntro`, precise one-liner) · when a service has more than one sub-service, a **sub-service sidebar + detail explorer** (`SubServiceExplorer.tsx`): sidebar nav lists every sub-service, selecting one shows its plain intro, What we deliver (each item its own name + full paragraph), optional Scope bullets, and Process (numbered, only if present) · CTA to Contact. Trademarks/Copyrights/Designs render with 0 subs cleanly (show service-level content only, explorer omitted) until subs are added.
 
 **Contact** — contact form (Web3Forms) · direct affordances: WhatsApp, `tel:`, email, address (all from `data/site.ts`) · office hours if provided. Form fields: name, email, phone (optional), subject/service interest (select from services list), message. Client-side validation, success + error states written in the interface's voice.
 
@@ -52,13 +54,18 @@ Defined in `data/services.ts` and `data/site.ts`; typed; accessed only through e
 
 ```ts
 // data/services.ts
+type DeliverItem = {
+  name: string;            // e.g. "Freedom to Operate"
+  description: string;     // full paragraph, shown in the explorer's detail pane
+};
+
 type SubService = {
   slug: string;            // stable, e.g. "search-analytics"
   name: string;            // "Patent Search & Analytics"
   plainIntro: string;      // 1–2 sentences an inventor understands
   precise: string;         // one authoritative line for associates/corporates
-  deliver: string[];       // "What we deliver" bullets
-  scope?: string[];        // optional scope points
+  deliver: DeliverItem[];  // "What we deliver" — name + full description each
+  scope?: string[];        // optional scope points (still plain bullets)
   process?: string[];      // optional ordered process steps
 };
 
@@ -94,15 +101,16 @@ type Site = {
 };
 ```
 
-**All values ship as clearly-labelled DUMMY** (e.g. phone `+910000000000`, address placeholders). The types are frozen; only values change on content handover.
+**Values are DUMMY until replaced field-by-field on content handover** (e.g. phone `+910000000000`, address placeholders) — real content arrives per-field, not all at once, and gets poured straight into these same shapes. The types are frozen; only values change.
 
 ## 6. Content Checklist (hand this back with the real `.md`)
-Every field below is dummy and must be replaced. When the real content `.md` arrives, it maps 1:1 into the shapes above.
+Fields below are dummy until checked off. When real content arrives, it maps 1:1 into the shapes above.
 
 - [ ] `site.ts`: firm tagline, phone, WhatsApp number, email, full address, hours, Web3Forms access key
 - [ ] Home: hero line, 3–4 "why KAP" points, CTA copy
 - [ ] About: firm story, approach, (optional) principals `people[]`
-- [ ] Patents: service `plainIntro`/`precise`/`overview`; for each of the 3 subs → `plainIntro`, `precise`, `deliver[]`, `scope[]?`, `process[]?`
+- [ ] Patents: service-level `plainIntro`/`precise`/`overview` (still dummy)
+- [x] Patents sub-services: real content received for all 7 (`data/patent_subservices.txt`) — Search & Analytics, Drafting, Global Filing & Prosecution, Patent Intelligence Services, Patent Agent Exam Training, AI Document Review all have real `plainIntro`/`precise`/`deliver[]`; **Patent Opposition Services is still a DUMMY placeholder** (source content cut off before its description — replace when received)
 - [ ] Trademarks / Copyrights / Designs: service-level content now; sub-services when defined
 - [ ] Any real imagery (until then, placeholder script output stands in)
 - [ ] Confirm forbidden-terms list for `leak-check` (likely empty for this site)

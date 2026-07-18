@@ -1,9 +1,17 @@
+import Hero from "@/components/sections/Hero";
+import AboutPreview from "@/components/sections/AboutPreview";
+import ServicesOverview from "@/components/sections/ServicesOverview";
+import WhyKAP from "@/components/sections/WhyKAP";
+import CTA from "@/components/sections/CTA";
+
 export default function Home() {
   return (
-    <main className="flex flex-1 items-center justify-center">
-      <p className="font-mono text-sm uppercase tracking-[0.12em] text-ink-soft">
-        Phase 0 — configured
-      </p>
-    </main>
+    <>
+      <Hero />
+      <AboutPreview />
+      <ServicesOverview />
+      <WhyKAP />
+      <CTA />
+    </>
   );
 }
