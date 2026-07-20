@@ -2,6 +2,7 @@ import type { SubService } from "@/data/services";
 import ScrollspyExplorer, { type ScrollspyExplorerItem } from "@/components/ui/ScrollspyExplorer";
 import Mark from "@/components/ui/Mark";
 import Rule from "@/components/ui/Rule";
+import ScrollColorHeading from "@/components/ui/ScrollColorHeading";
 
 export type SubServiceExplorerProps = {
   subServices: SubService[];
@@ -29,7 +30,9 @@ export default function SubServiceExplorer({ subServices }: SubServiceExplorerPr
           <div className="flex flex-col gap-6">
             {subService.deliver.map((item) => (
               <div key={item.name} className="flex flex-col gap-1.5">
-                <h3 className="font-display text-h3 font-semibold text-ink">{item.name}</h3>
+                <ScrollColorHeading as="h3" className="font-display text-h3 font-semibold">
+                  {item.name}
+                </ScrollColorHeading>
                 <p className="max-w-prose font-body text-body text-ink-soft">
                   {item.description}
                 </p>

@@ -3,11 +3,15 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { site } from "@/data/site";
-import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
 import Rule from "@/components/ui/Rule";
-import { MARK_PATHS } from "@/components/ui/Mark";
-import { getMarkDraw, getSectionReveal, useSafeReducedMotion } from "@/lib/motion";
+import ScrollColorHeading from "@/components/ui/ScrollColorHeading";
+import { getWipeReveal, useSafeReducedMotion } from "@/lib/motion";
+
+// Deliberately not the shared Container: Container's max-w-container (1120px)
+// would cap the hero card well short of the viewport on wide screens, leaving
+// large empty margins either side. The hero instead gets its own small,
+// fixed gutter with no width cap, so it stays close to full width everywhere.
 
 export default function Hero() {
   const prefersReducedMotion = useSafeReducedMotion();
@@ -15,8 +19,13 @@ export default function Hero() {
   const delay = (seconds: number) => (prefersReducedMotion ? 0 : seconds);
 
   return (
-    <Container>
-      <section className="relative overflow-hidden rounded-hero bg-accent">
+    <div className="px-4 sm:px-6">
+      <motion.section
+        className="relative overflow-hidden rounded-hero bg-accent"
+        initial="hidden"
+        animate="visible"
+        variants={getWipeReveal(prefersReducedMotion)}
+      >
         {/* Image confined to the right side only, tinted into the panel color */}
         <div className="absolute inset-y-0 right-0 hidden w-1/2 md:block lg:w-[45%]">
           <Image
@@ -31,64 +40,27 @@ export default function Hero() {
           <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-accent to-transparent" />
         </div>
 
-        <div className="relative flex flex-col gap-6 px-5 py-16 md:w-1/2 md:px-6 md:py-20 lg:w-[55%] lg:px-8">
+        <div className="relative flex flex-col gap-5 px-5 py-12 md:w-1/2 md:px-6 md:py-16 lg:w-[55%] lg:px-8">
           <motion.div
             initial="hidden"
             animate="visible"
-            variants={getSectionReveal(prefersReducedMotion)}
-            className="inline-flex w-fit items-center gap-2 rounded-card border border-paper/30 px-3 py-1.5"
+            variants={getWipeReveal(prefersReducedMotion)}
+            transition={{ delay: delay(0.5) }}
           >
-            <motion.svg
-              width={20}
-              height={20}
-              viewBox="0 0 24 24"
-              fill="none"
-              aria-hidden="true"
-              className="text-paper"
-              initial="hidden"
-              animate="visible"
+            <ScrollColorHeading
+              as="h1"
+              tone="paper"
+              className="max-w-xl font-display text-display-l font-bold tracking-tighter md:text-display-xl"
             >
-              <motion.path
-                d={MARK_PATHS.bracketTopLeft}
-                stroke="currentColor"
-                strokeWidth="1.5"
-                variants={getMarkDraw(prefersReducedMotion, "bracket")}
-              />
-              <motion.path
-                d={MARK_PATHS.bracketBottomRight}
-                stroke="currentColor"
-                strokeWidth="1.5"
-                variants={getMarkDraw(prefersReducedMotion, "bracket")}
-              />
-              <motion.path
-                d={MARK_PATHS.check}
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                variants={getMarkDraw(prefersReducedMotion, "check")}
-              />
-            </motion.svg>
-            <span className="font-mono text-mono-eyebrow uppercase tracking-[0.12em] text-paper/80">
-              Precision IP Counsel {/* DUMMY badge copy */}
-            </span>
+              {site.tagline}
+            </ScrollColorHeading>
           </motion.div>
-
-          <motion.h1
-            initial="hidden"
-            animate="visible"
-            variants={getSectionReveal(prefersReducedMotion)}
-            transition={{ delay: delay(0.15) }}
-            className="max-w-xl font-display text-display-l font-bold tracking-tighter text-paper md:text-display-xl"
-          >
-            {site.tagline}
-          </motion.h1>
 
           <motion.p
             initial="hidden"
             animate="visible"
-            variants={getSectionReveal(prefersReducedMotion)}
-            transition={{ delay: delay(0.3) }}
+            variants={getWipeReveal(prefersReducedMotion)}
+            transition={{ delay: delay(0.65) }}
             className="max-w-md font-body text-body text-paper/80"
           >
             {/* DUMMY supporting copy */}
@@ -99,8 +71,8 @@ export default function Hero() {
           <motion.div
             initial="hidden"
             animate="visible"
-            variants={getSectionReveal(prefersReducedMotion)}
-            transition={{ delay: delay(0.35) }}
+            variants={getWipeReveal(prefersReducedMotion)}
+            transition={{ delay: delay(0.78) }}
           >
             <Rule variant="short" className="border-paper/30" />
           </motion.div>
@@ -108,9 +80,9 @@ export default function Hero() {
           <motion.div
             initial="hidden"
             animate="visible"
-            variants={getSectionReveal(prefersReducedMotion)}
-            transition={{ delay: delay(0.45) }}
-            className="flex flex-wrap gap-4 pb-2"
+            variants={getWipeReveal(prefersReducedMotion)}
+            transition={{ delay: delay(0.9) }}
+            className="flex flex-wrap gap-4"
           >
             <Button
               href="/contact"
@@ -129,7 +101,13 @@ export default function Hero() {
             </Button>
           </motion.div>
         </div>
-      </section>
-    </Container>
+
+        {/* Mobile: image stacked below the text instead of hidden entirely */}
+        <div className="relative h-56 w-full md:hidden">
+          <Image src="/images/hero/hero-bg.webp" alt="" fill sizes="100vw" className="object-cover" />
+          <div className="absolute inset-0 bg-accent-deep/40" />
+        </div>
+      </motion.section>
+    </div>
   );
 }

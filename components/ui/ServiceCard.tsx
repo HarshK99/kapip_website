@@ -1,6 +1,5 @@
 import Link from "next/link";
 import type { Service } from "@/data/services";
-import Badge from "@/components/ui/Badge";
 import { cn } from "@/lib/utils";
 
 export type ServiceCardProps = {
@@ -19,10 +18,7 @@ export default function ServiceCard({ service, className }: ServiceCardProps) {
     >
       <div className="flex items-start justify-between gap-3">
         <span className="font-display text-h3 font-semibold text-ink">{service.name}</span>
-        {service.subServices.length > 0 ? (
-          <Badge>{service.subServices.length} sub-services</Badge>
-        ) : null}
-      </div>
+        </div>
       <p className="font-body text-body text-ink-soft">{service.summary}</p>
       <span className="mt-auto inline-flex items-center gap-1 font-mono text-mono-eyebrow uppercase tracking-[0.12em] text-ink-soft transition-colors group-hover:text-accent">
         Explore

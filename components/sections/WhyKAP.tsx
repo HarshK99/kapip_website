@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
+import ScrollColorHeading from "@/components/ui/ScrollColorHeading";
 import {
   getSectionReveal,
   getStaggerContainer,
@@ -50,7 +51,9 @@ export default function WhyKAP() {
               variants={getSectionReveal(prefersReducedMotion)}
               className="flex flex-col gap-2"
             >
-              <h3 className="font-display text-h3 font-semibold text-ink">{point.title}</h3>
+              <ScrollColorHeading as="h3" className="font-display text-h3 font-semibold">
+                {point.title}
+              </ScrollColorHeading>
               <p className="font-body text-body text-ink-soft">{point.body}</p>
             </motion.div>
           ))}

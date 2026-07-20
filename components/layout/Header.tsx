@@ -18,12 +18,28 @@ export default function Header() {
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const servicesRef = useRef<HTMLDivElement>(null);
+  const closeServicesTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const openServices = () => {
+    if (closeServicesTimeout.current) clearTimeout(closeServicesTimeout.current);
+    setServicesOpen(true);
+  };
+
+  const scheduleCloseServices = () => {
+    closeServicesTimeout.current = setTimeout(() => setServicesOpen(false), 150);
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (closeServicesTimeout.current) clearTimeout(closeServicesTimeout.current);
+    };
   }, []);
 
   useEffect(() => {
@@ -74,7 +90,13 @@ export default function Header() {
           <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
             {primaryNavItems.map((item) =>
               item.label === "Services" ? (
-                <div key={item.href} ref={servicesRef} className="relative">
+                <div
+                  key={item.href}
+                  ref={servicesRef}
+                  className="relative"
+                  onMouseEnter={openServices}
+                  onMouseLeave={scheduleCloseServices}
+                >
                   <button
                     type="button"
                     aria-expanded={servicesOpen}

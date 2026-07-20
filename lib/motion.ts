@@ -4,8 +4,8 @@ import type { Variants } from "framer-motion";
 // Restrained variants (DESIGN.md — Motion). One set, reused everywhere.
 // Reduced-motion-safe: components read `prefersReducedMotion` (via
 // `useSafeReducedMotion` below) and pass it to `getSectionReveal` /
-// `getHoverLift` / `getMarkDraw` instead of importing the animated variants
-// directly.
+// `getHoverLift` / `getStaggerContainer` instead of importing the animated
+// variants directly.
 
 // Framer Motion's own `useReducedMotion` resolves the OS preference
 // synchronously on the client, before React can reconcile against
@@ -78,27 +78,20 @@ const staggerContainerInstant: Variants = {
 export const getStaggerContainer = (prefersReducedMotion: boolean): Variants =>
   prefersReducedMotion ? staggerContainerInstant : staggerContainerMotion;
 
-// The one orchestrated moment (DESIGN.md — Motion): the Home hero mark draws
-// its corner-brackets, then the check settles in, once on load.
-const markDrawBracket: Variants = {
-  hidden: { pathLength: 0 },
-  visible: { pathLength: 1, transition: { duration: 0.5, ease: "easeOut" } },
+// Left-to-right wipe reveal: the element is fully clipped from the right
+// edge inward (nothing visible), then the clip boundary sweeps rightward
+// until the whole element shows — a "curtain sliding away" reveal rather
+// than a fade/slide. Used for the Home hero's on-load entrance (its own
+// card, then its staggered text) instead of the usual up-fade.
+const wipeRevealMotion: Variants = {
+  hidden: { clipPath: "inset(0% 100% 0% 0%)" },
+  visible: { clipPath: "inset(0% 0% 0% 0%)", transition: { duration: 0.5, ease: "easeOut" } },
 };
 
-const markDrawCheck: Variants = {
-  hidden: { pathLength: 0 },
-  visible: { pathLength: 1, transition: { duration: 0.35, ease: "easeOut", delay: 0.45 } },
+const wipeRevealInstant: Variants = {
+  hidden: { clipPath: "inset(0% 0% 0% 0%)" },
+  visible: { clipPath: "inset(0% 0% 0% 0%)", transition: { duration: 0 } },
 };
 
-const markDrawInstant: Variants = {
-  hidden: { pathLength: 1 },
-  visible: { pathLength: 1, transition: { duration: 0 } },
-};
-
-export const getMarkDraw = (
-  prefersReducedMotion: boolean,
-  part: "bracket" | "check"
-): Variants => {
-  if (prefersReducedMotion) return markDrawInstant;
-  return part === "bracket" ? markDrawBracket : markDrawCheck;
-};
+export const getWipeReveal = (prefersReducedMotion: boolean): Variants =>
+  prefersReducedMotion ? wipeRevealInstant : wipeRevealMotion;

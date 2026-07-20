@@ -25,6 +25,13 @@ export type Site = {
   /** Web3Forms access key — public by design. DUMMY */
   web3formsKey: string;
   nav: NavItem[];
+  /** Social profile URLs — DUMMY placeholders until real profiles exist */
+  socials: {
+    linkedin: string;
+    twitter: string;
+  };
+  /** Studio credit shown in the footer's bottom bar */
+  developer?: string;
 };
 
 export const site: Site = {
@@ -49,6 +56,11 @@ export const site: Site = {
     { label: "Services", href: "/services" },
     { label: "Contact", href: "/contact" },
   ],
+  socials: {
+    linkedin: "https://linkedin.com/company/REPLACE_ME", // DUMMY
+    twitter: "https://twitter.com/REPLACE_ME", // DUMMY
+  },
+  developer: "Dragun Labs",
 };
 
 // ---- Access helpers (use these in components) ----

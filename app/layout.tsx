@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Poppins, Newsreader, IBM_Plex_Mono } from "next/font/google";
+import { Poppins, Inter, IBM_Plex_Mono } from "next/font/google";
 import { site } from "@/data/site";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -13,7 +13,7 @@ const poppins = Poppins({
   display: "swap",
 });
 
-const newsreader = Newsreader({
+const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500"],
   variable: "--font-body",
@@ -40,7 +40,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${newsreader.variable} ${ibmPlexMono.variable} h-full`}
+      className={`${poppins.variable} ${inter.variable} ${ibmPlexMono.variable} h-full`}
     >
       <body className="min-h-full flex flex-col">
         <Header />

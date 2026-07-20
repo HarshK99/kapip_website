@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import Mark from "@/components/ui/Mark";
 import Rule from "@/components/ui/Rule";
+import ScrollColorHeading from "@/components/ui/ScrollColorHeading";
 
 export type SectionHeadingProps = {
   eyebrow: string;
@@ -10,7 +11,7 @@ export type SectionHeadingProps = {
 };
 
 const headingSize: Record<NonNullable<SectionHeadingProps["level"]>, string> = {
-  h1: "text-display-l md:text-display-xl",
+  h1: "text-h2",
   h2: "text-h2",
   h3: "text-h3",
 };
@@ -21,8 +22,6 @@ export default function SectionHeading({
   level = "h2",
   className,
 }: SectionHeadingProps) {
-  const Heading = level;
-
   return (
     <div className={cn("flex flex-col gap-3", className)}>
       <div className="flex items-center gap-2">
@@ -32,9 +31,12 @@ export default function SectionHeading({
         </span>
       </div>
       <Rule variant="short" />
-      <Heading className={cn("font-display font-semibold tracking-tight text-ink", headingSize[level])}>
+      <ScrollColorHeading
+        as={level}
+        className={cn("font-display font-semibold tracking-tight", headingSize[level])}
+      >
         {heading}
-      </Heading>
+      </ScrollColorHeading>
     </div>
   );
 }

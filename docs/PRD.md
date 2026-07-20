@@ -94,10 +94,12 @@ type Site = {
   phone: string;           // E.164 for tel:  e.g. "+91XXXXXXXXXX"
   whatsapp: string;        // digits only for wa.me
   email: string;
-  address: { line1: string; line2?: string; city: string; state: string; pincode: string; };
+  address: { line1: string; line2?: string; city: string; state: string; pincode: string; country: string; };
   hours?: string;
   web3formsKey: string;    // access key, public by design
   nav: { label: string; href: string }[];
+  socials: { linkedin: string; twitter: string }; // DUMMY profile URLs — footer social icons
+  developer?: string;      // studio credit in the footer's bottom bar
 };
 ```
 
@@ -106,7 +108,7 @@ type Site = {
 ## 6. Content Checklist (hand this back with the real `.md`)
 Fields below are dummy until checked off. When real content arrives, it maps 1:1 into the shapes above.
 
-- [ ] `site.ts`: firm tagline, phone, WhatsApp number, email, full address, hours, Web3Forms access key
+- [ ] `site.ts`: firm tagline, phone, WhatsApp number, email, full address, hours, Web3Forms access key, LinkedIn/Twitter profile URLs (`socials`)
 - [ ] Home: hero line, 3–4 "why KAP" points, CTA copy
 - [ ] About: firm story, approach, (optional) principals `people[]`
 - [ ] Patents: service-level `plainIntro`/`precise`/`overview` (still dummy)

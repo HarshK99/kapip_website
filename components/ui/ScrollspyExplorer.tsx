@@ -58,7 +58,7 @@ export default function ScrollspyExplorer({ items, navLabel = "Sections" }: Scro
   if (items.length === 0) return null;
 
   return (
-    <Container className="grid gap-8 md:grid-cols-[240px_1fr] md:gap-16">
+    <Container className="grid gap-8 py-16 md:grid-cols-[240px_1fr] md:gap-16 md:py-24">
       <nav
         aria-label={navLabel}
         className="sticky top-16 z-10 -mx-5 flex gap-1 overflow-x-auto bg-paper px-5 py-3 md:top-24 md:mx-0 md:flex-col md:overflow-visible md:self-start md:bg-transparent md:px-0 md:py-0"
@@ -72,7 +72,7 @@ export default function ScrollspyExplorer({ items, navLabel = "Sections" }: Scro
               onClick={() => handleNavClick(item.id)}
               aria-current={isActive}
               className={cn(
-                "flex-none whitespace-nowrap border-l-2 px-3 py-2 text-left font-display text-small transition-colors md:whitespace-normal",
+                "flex-none whitespace-nowrap border-l-2 py-2 pl-4 pr-3 text-left font-display text-small transition-colors md:whitespace-normal",
                 isActive
                   ? "border-accent font-medium text-ink"
                   : "border-line text-ink-soft hover:border-accent/50 hover:text-ink"
