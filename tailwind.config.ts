@@ -23,6 +23,10 @@ const config: Config = {
         display: ["var(--font-display)"],
         body: ["var(--font-body)"],
         mono: ["var(--font-mono)"],
+        // Reuses Tailwind's own "serif" utility name rather than inventing a
+        // new one. Used in exactly one place — the Home hero H1 — everything
+        // else stays on font-display/font-body/font-mono.
+        serif: ["var(--font-hero-serif)"],
       },
       maxWidth: {
         container: "1120px",

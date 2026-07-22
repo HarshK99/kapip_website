@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Poppins, Inter, IBM_Plex_Mono } from "next/font/google";
+import { Poppins, Inter, IBM_Plex_Mono, Fraunces } from "next/font/google";
 import { site } from "@/data/site";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -27,6 +27,18 @@ const ibmPlexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
+// Used in exactly one place: the Home hero's H1. Everything else stays on
+// font-display/font-body/font-mono — see DESIGN.md's Typography section.
+// Loaded as the full variable font (no fixed `weight`) so the hero can dial
+// in Fraunces's opsz/SOFT/WONK axes via font-variation-settings for a
+// sharper, higher-contrast cut rather than its default softer text setting.
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  axes: ["opsz", "SOFT", "WONK"],
+  variable: "--font-hero-serif",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: { default: site.name, template: `%s | ${site.name}` },
   description: site.tagline,
@@ -40,7 +52,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${inter.variable} ${ibmPlexMono.variable} h-full`}
+      className={`${poppins.variable} ${inter.variable} ${ibmPlexMono.variable} ${fraunces.variable} h-full`}
     >
       <body className="min-h-full flex flex-col">
         <Header />

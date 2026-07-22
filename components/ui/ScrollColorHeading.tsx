@@ -11,6 +11,8 @@ export type ScrollColorHeadingProps = {
   className?: string;
   /** "ink" for headings on paper/surface backgrounds (default), "paper" for headings on dark accent panels (the Home hero). */
   tone?: "ink" | "paper";
+  /** Merged with the internal gradient/color style — e.g. font-variation-settings for a variable font. */
+  style?: CSSProperties;
 };
 
 const motionTags = { h1: motion.h1, h2: motion.h2, h3: motion.h3 } as const;
@@ -31,6 +33,7 @@ export default function ScrollColorHeading({
   children,
   className,
   tone = "ink",
+  style,
 }: ScrollColorHeadingProps) {
   const prefersReducedMotion = useSafeReducedMotion();
   const ref = useRef<HTMLHeadingElement>(null);
@@ -45,7 +48,7 @@ export default function ScrollColorHeading({
   if (prefersReducedMotion) {
     const Tag = as;
     return (
-      <Tag className={className} style={{ color: final }}>
+      <Tag className={className} style={{ ...style, color: final }}>
         {children}
       </Tag>
     );
@@ -57,6 +60,7 @@ export default function ScrollColorHeading({
   // `unknown`) is the standard escape hatch for this exact background-clip:
   // text + animated gradient technique.
   const gradientStyle = {
+    ...style,
     backgroundImage,
     WebkitBackgroundClip: "text",
     backgroundClip: "text",

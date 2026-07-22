@@ -50,7 +50,8 @@ export default function Hero() {
             <ScrollColorHeading
               as="h1"
               tone="paper"
-              className="max-w-xl font-display text-display-l font-bold tracking-tighter md:text-display-xl"
+              className="max-w-xl font-serif text-display-l font-bold tracking-tighter md:text-display-xl"
+              style={{ fontVariationSettings: '"opsz" 144, "SOFT" 20, "WONK" 60' }}
             >
               {site.tagline}
             </ScrollColorHeading>
