@@ -52,12 +52,16 @@ export default function ScrollColorHeading({
   }
 
   const MotionTag = motionTags[as];
+  // framer-motion's `style` prop accepts MotionValues per-property at runtime,
+  // but React's CSSProperties type doesn't model that — the double cast (via
+  // `unknown`) is the standard escape hatch for this exact background-clip:
+  // text + animated gradient technique.
   const gradientStyle = {
     backgroundImage,
     WebkitBackgroundClip: "text",
     backgroundClip: "text",
     color: "transparent",
-  } as CSSProperties;
+  } as unknown as CSSProperties;
 
   return (
     <MotionTag ref={ref} className={className} style={gradientStyle}>

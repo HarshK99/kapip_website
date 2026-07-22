@@ -102,10 +102,13 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* Mobile: image stacked below the text instead of hidden entirely */}
+        {/* Mobile: image stacked below the text. One continuous gradient (not
+            two overlapping overlays) so there's no visible seam where it
+            meets the solid-accent panel above — it starts at the exact same
+            accent color, then eases into the tint. */}
         <div className="relative h-56 w-full md:hidden">
           <Image src="/images/hero/hero-bg.webp" alt="" fill sizes="100vw" className="object-cover" />
-          <div className="absolute inset-0 bg-accent-deep/40" />
+          <div className="absolute inset-0 bg-gradient-to-b from-accent via-accent-deep/55 to-accent-deep/20" />
         </div>
       </motion.section>
     </div>

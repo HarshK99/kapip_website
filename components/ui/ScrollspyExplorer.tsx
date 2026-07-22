@@ -27,6 +27,7 @@ export default function ScrollspyExplorer({ items, navLabel = "Sections" }: Scro
   const prefersReducedMotion = useSafeReducedMotion();
   const [activeId, setActiveId] = useState(items[0]?.id);
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
+  const navButtonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -50,6 +51,19 @@ export default function ScrollspyExplorer({ items, navLabel = "Sections" }: Scro
     return () => observer.disconnect();
   }, [items]);
 
+  // Keep the nav strip itself in sync: whichever button just became active
+  // (via scrollspy OR a click) scrolls into view within the strip — on
+  // mobile the strip scrolls horizontally, so without this the active item
+  // can go bold off-screen with nothing visible confirming what's active.
+  useEffect(() => {
+    if (!activeId) return;
+    navButtonRefs.current[activeId]?.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      inline: "center",
+      block: "nearest",
+    });
+  }, [activeId, prefersReducedMotion]);
+
   const handleNavClick = (id: string) => {
     setActiveId(id);
     sectionRefs.current[id]?.scrollIntoView({ behavior: "auto", block: "start" });
@@ -61,13 +75,16 @@ export default function ScrollspyExplorer({ items, navLabel = "Sections" }: Scro
     <Container className="grid gap-8 py-16 md:grid-cols-[240px_1fr] md:gap-16 md:py-24">
       <nav
         aria-label={navLabel}
-        className="sticky top-16 z-10 -mx-5 flex gap-1 overflow-x-auto bg-paper px-5 py-3 md:top-24 md:mx-0 md:flex-col md:overflow-visible md:self-start md:bg-transparent md:px-0 md:py-0"
+        className="sticky top-16 z-10 -mx-5 flex touch-pan-x gap-1 overflow-x-auto bg-paper px-5 py-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:top-24 md:mx-0 md:touch-auto md:flex-col md:overflow-visible md:self-start md:bg-transparent md:px-0 md:py-0"
       >
         {items.map((item) => {
           const isActive = item.id === activeId;
           return (
             <button
               key={item.id}
+              ref={(el: HTMLButtonElement | null) => {
+                navButtonRefs.current[item.id] = el;
+              }}
               type="button"
               onClick={() => handleNavClick(item.id)}
               aria-current={isActive}
@@ -82,6 +99,10 @@ export default function ScrollspyExplorer({ items, navLabel = "Sections" }: Scro
             </button>
           );
         })}
+        <span
+          className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-paper to-transparent md:hidden"
+          aria-hidden="true"
+        />
       </nav>
 
       <div className="flex flex-col gap-16">
