@@ -5,22 +5,29 @@
 
 export type NavItem = { label: string; href: string };
 
+export type Office = {
+  /** e.g. "Registered Office", "Bangalore Office" */
+  label: string;
+  line1: string;
+  line2?: string;
+  city: string;
+  state: string;
+  pincode: string;
+  country: string;
+};
+
 export type Site = {
   name: string;
   tagline: string;
+  /** brand expansion / positioning line — "Knowledge Assured Protection" */
+  brandLine: string;
   /** E.164, used for tel: — DUMMY */
   phone: string;
   /** digits only, used for https://wa.me/<whatsapp> — DUMMY */
   whatsapp: string;
   email: string;
-  address: {
-    line1: string;
-    line2?: string;
-    city: string;
-    state: string;
-    pincode: string;
-    country: string;
-  };
+  /** Registered Office first; additional offices follow. */
+  offices: Office[];
   hours?: string;
   /** Web3Forms access key — public by design. DUMMY */
   web3formsKey: string;
@@ -37,17 +44,30 @@ export type Site = {
 export const site: Site = {
   name: "KAP IP",
   tagline: "Strategic patent and IP solutions for innovators worldwide.",
+  brandLine: "Knowledge Assured Protection",
   phone: "+910000000000", // DUMMY — replace with real E.164 number
   whatsapp: "910000000000", // DUMMY — digits only, country code + number
   email: "hello@example.com", // DUMMY — awaiting real email
-  address: {
-    line1: "1402, A Block, Royal Aawas Tirupati",
-    line2: "Ahom Gaon, near Royal Global University, Betkuchi",
-    city: "Guwahati",
-    state: "Assam",
-    pincode: "781035",
-    country: "India",
-  },
+  offices: [
+    {
+      label: "Registered Office",
+      line1: "1402, A Block, Royal Aawas Tirupati",
+      line2: "Ahom Gaon, near Royal Global University, Betkuchi",
+      city: "Guwahati",
+      state: "Assam",
+      pincode: "781035",
+      country: "India",
+    },
+    {
+      label: "Bangalore Office",
+      line1: "REPLACE_WITH_ADDRESS_LINE_1", // DUMMY
+      line2: "REPLACE_WITH_ADDRESS_LINE_2", // DUMMY
+      city: "Bangalore",
+      state: "Karnataka",
+      pincode: "560000", // DUMMY
+      country: "India",
+    },
+  ],
   hours: "Mon–Fri, 10:00–18:00 IST", // DUMMY
   web3formsKey: "REPLACE_WITH_WEB3FORMS_ACCESS_KEY", // DUMMY
   nav: [
@@ -68,9 +88,7 @@ export const telHref = () => `tel:${site.phone}`;
 export const whatsappHref = (message?: string) =>
   `https://wa.me/${site.whatsapp}${message ? `?text=${encodeURIComponent(message)}` : ""}`;
 export const mailHref = () => `mailto:${site.email}`;
-export const formattedAddress = () => {
-  const a = site.address;
-  return [a.line1, a.line2, `${a.city}, ${a.state} ${a.pincode}`, a.country]
+export const formattedAddress = (office: Office) =>
+  [office.line1, office.line2, `${office.city}, ${office.state} ${office.pincode}`, office.country]
     .filter(Boolean)
     .join(", ");
-};

@@ -38,7 +38,7 @@ export default function ContactBlock() {
             <a href={mailHref()} className="w-fit transition-colors hover:text-accent">
               {site.email}
             </a>
-            <p>{formattedAddress()}</p>
+            <p>{formattedAddress(site.offices[0])}</p>
             {site.hours ? <p className="text-small text-ink-soft">{site.hours}</p> : null}
           </div>
 

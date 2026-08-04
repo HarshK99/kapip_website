@@ -19,6 +19,7 @@ If you ever reach for a server-only feature, STOP and flag it — propose a stat
 ## India context (non-negotiable)
 - Mobile-first, assume slower networks. Performance and image weight always matter.
 - Contact affordances everywhere relevant: WhatsApp (`https://wa.me/<number>`) + `tel:` + email. These come from `data/site.ts`, never hardcoded in components.
+- **Multi-office.** `site.offices` is an array (Registered Office in Guwahati, plus a Bangalore office), not a single `address`. Anywhere an address renders, call `formattedAddress(office)` per office — don't assume there's exactly one.
 
 ## Coding standards — enforced every phase
 **Modular & DRY.** Any UI used more than once → a component (`Button`, `SectionHeading`, `ServiceCard`, `Container`, `Badge`). Any logic used more than once → a helper in `lib/`. Never copy-paste variants of the same block.
@@ -64,6 +65,12 @@ No sensitive internal data expected. Still: `data/services.ts` exposes only publ
 
 ## Design north star
 Precise, modern-minimal. Trust through restraint and typography, not ornament. One signature element only (the registration/allowance mark — see `docs/DESIGN.md`). Restrained motion. Avoid every legal-firm cliché: navy+gold serif, scales/gavel, stock handshakes, heavy shadows, gradient overload. If a change makes the site look more generic, it's wrong.
+
+**Brand ramp + gradient — logo/signature only.** A separate decorative palette (`brand-indigo` `#1B2C74` / `brand-teal` `#14827A` / `brand-green` `#2E9E5B` / `brand-lime` `#AEC61C`, combined into `--brand-gradient`) exists for the KAP brand mark only. It never substitutes for the functional `accent`/`accent-deep` pair, and it's scoped to exactly three places: the signature mark/logo (which is now gradient-filled — the one exception to the mark's usual flat `accent`), one hero accent moment, and thin dividers/underlines. Never as a background wash behind body text or a full section fill. These hex values are provisional until synced to the final logo — see `docs/DESIGN.md` → Palette.
+
+**Life-sciences imagery, not life-sciences-only.** Primary practice is life sciences (pharma, chemistry, medicines, molecules) — imagery leans molecule/DNA/protein-forward by default. But breadth (electrical, mechanical, AI) must stay visible near the top of the site (the domains grid, prominent near the hero) and non-life-sciences service pages use neutral/mixed motifs. Don't let every panel reach for a molecule.
+
+**Restrained interactivity, perf-first.** New interactions (hero motif assembling on load, stat count-up on scroll-into-view, hover states on cards/domains) extend the existing motion primitives in `lib/motion.ts` — they don't introduce a new animation language. Every interaction must be reduced-motion-safe, lazy-loaded where relevant, and justified by clarity, not spectacle. No heavy video, no scroll-jacking.
 
 ## Phase discipline
 One phase per session. Each phase: do the work → `npm run lint` → ask before running `npm run build` → commit only if asked. Phases: 0 Configure · 1 Shell · 2 Home · 3 Services (core feature) · 4 Content pages (About, Contact) · 5 Polish · 6 Deploy prep. Full prompts in `KICKOFF-PROMPT.md`.

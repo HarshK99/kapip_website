@@ -64,7 +64,7 @@ export default function Footer() {
             <span className="font-mono text-mono-eyebrow uppercase tracking-[0.12em] text-paper/50">
               Address
             </span>
-            <p className="font-body text-body text-paper/80">{formattedAddress()}</p>
+            <p className="font-body text-body text-paper/80">{formattedAddress(site.offices[0])}</p>
           </div>
 
           {site.hours ? (

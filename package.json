@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "placeholders": "tsx scripts/placeholder-images.mjs"
+    "placeholders": "tsx scripts/placeholder-images.mjs",
+    "placeholder-team": "tsx scripts/placeholder-team-photos.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

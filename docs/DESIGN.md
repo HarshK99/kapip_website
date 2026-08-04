@@ -20,6 +20,24 @@ A restrained, precise palette. Ink + paper base, one confident accent drawn from
 
 Usage discipline: accent is for meaning (links, the signature mark, the one CTA state), not for decoration. Backgrounds stay in the paper/surface range, with two deliberate, scoped exceptions: the Home hero card (`bg-accent`) and the Footer (`bg-accent-deep`) — both matched to the header's Contact button color for brand continuity, both flip their text to `paper`-based tones for contrast, and neither is a decorative gradient wash across the page. Everywhere else, backgrounds stay in the paper/surface range and accent stays reserved for meaning. Never introduce a hex outside this table in a component.
 
+### Brand ramp (decorative/logo only — provisional)
+A second, separate palette for the KAP brand mark and gradient moments only. It never substitutes for the functional `accent`/`accent-deep` pair above, and it never sits behind body text.
+
+| Token          | Hex        | Role |
+|----------------|------------|------|
+| `brand-indigo` | `#1B2C74`  | gradient stop 0% |
+| `brand-teal`   | `#14827A`  | gradient stop 38% |
+| `brand-green`  | `#2E9E5B`  | gradient stop 68% |
+| `brand-lime`   | `#AEC61C`  | gradient stop 100% |
+
+```css
+--brand-gradient: linear-gradient(120deg, #1B2C74 0%, #14827A 38%, #2E9E5B 68%, #AEC61C 100%);
+```
+
+**Rule:** the gradient appears in exactly three places — the signature mark/logo, one hero accent moment, and thin dividers/underlines. Never as a background wash behind body text or a full section fill. Base UI stays on the paper/ink + functional-accent system above; the brand ramp is a decorative accent layer on top of it, not a replacement for it.
+
+**Note:** these four hex values are provisional — sync to the final logo's exact colors once delivered.
+
 ## Typography — sans-first, with one deliberate serif exception
 The register is *technical precision*, delivered through a bold display sans for statements and a neutral, screen-optimized sans for reading — plus one scoped serif accent on the single most important line on the site. The earlier "grotesque display / humanist serif" pairing (Space Grotesk + Newsreader) was fully retired in favor of an all-sans system; the serif below is a separate, later, narrowly-scoped reintroduction, not a return to that pairing.
 
@@ -30,15 +48,24 @@ The register is *technical precision*, delivered through a bold display sans for
 
 Load via `next/font/google` (self-hosted at build, static-safe). Expose as CSS vars: `--font-display`, `--font-body`, `--font-mono`, `--font-hero-serif`; map in Tailwind `fontFamily` (the serif reuses Tailwind's own `serif` key rather than a custom one). Poppins ships only in static weights (no variable axis) — load exactly the weights used (`500`/`600`/`700`), not the full family, to keep the font payload small. Fraunces is the one exception: loaded as a full variable font (with `axes: ["opsz", "SOFT", "WONK"]`) specifically so its optical-size/softness/wonkiness can be tuned via `font-variation-settings`, per above.
 
-**Type scale** (rem, mobile → desktop clamps): display-xl `2.5→4.25`, display-l `2→3`, h2 `1.5→2`, h3 `1.25→1.5`, body `1.0625`, small `0.9375`, mono-eyebrow `0.75` (tracked `0.12em`, uppercase). Line-height: headings 1.05–1.15, body 1.6.
+**Type scale** (rem, mobile → desktop clamps): display-xl `2.5→4.25`, display-l `2→3`, `lead` `1.125→1.25`, h2 `1.5→2`, h3 `1.25→1.5`, body `1.0625`, small `0.9375`, mono-eyebrow `0.75` (tracked `0.12em`, uppercase). Line-height: headings 1.05–1.15, `lead` 1.4, body 1.6.
+
+### Site-wide type hierarchy inversion
+Previous drafts led with a full descriptive sentence as the biggest thing on the page. Inverted: the **section name is the largest element in its section** — a short label (1–3 words: "Patents", "About", "Contact"), set in `display-xl`/`display-l`, `font-display` 600–700, with added `letter-spacing` (tracked, not tight) so a short word still commands the space. The **descriptive sentence drops to a supporting `lead`** (`1.125–1.25rem`, `font-body`, `ink-soft`) directly beneath it — still readable, no longer competing for size. The **mono eyebrow shrinks further into a small kicker** (`mono-eyebrow`, `0.75rem`, tracked `0.12em`, uppercase) sitting above the name, paired with the mark.
+
+Stack, top to bottom: kicker (mark + mono label) → name (big, tracked) → lead sentence (small, supporting).
+
+Any heading written as one long full sentence must be split into this shape: pull the short noun/name out as the display element, demote the rest to the `lead` line underneath. This applies to `SectionHeading` (`components/ui/SectionHeading.tsx`) sitewide — its `eyebrow`/`heading` props gain this three-tier layout — and to the hand-rolled Home/About heroes (point below).
 
 ## Signature element — the "registration mark"
-The one thing this site is remembered by. IP work culminates in a *grant/registration* — the moment a right is recognized. Render that as a **precise geometric glyph**: a fine-line square bracket/corner-crop framing a small filled check or seal notch, in `accent`. Think a registration corner-mark on a drawing sheet, not a badge.
+The one thing this site is remembered by. IP work culminates in a *grant/registration* — the moment a right is recognized. Render that as a **precise geometric glyph**: a fine-line square bracket/corner-crop framing a small filled check or seal notch. Think a registration corner-mark on a drawing sheet, not a badge.
+
+**Fill — brand gradient exception.** The mark is the one shape allowed to carry `--brand-gradient` (see palette above) instead of flat `accent` — it's the seed the eventual logo will be built from. Every other use of the mark (eyebrow markers, ambient background texture) stays on the quiet `accent`/`line`/`surface` tones below; only the primary logo-lockup instance takes the gradient fill. Provisional until synced to the final logo.
 
 Uses (sparingly — this is the *one* accessory we keep):
-- As the logo lockup mark beside "KAP IP".
-- As the eyebrow marker before section headings on service pages (replaces bullets/numbers).
-- One large, faint version as ambient texture behind the Home hero or footer — low opacity, `line`/`surface` tones, never loud.
+- As the logo lockup mark beside "KAP IP" — gradient-filled (see above).
+- As the eyebrow marker before section headings on service pages (replaces bullets/numbers) — flat `accent`, not the gradient.
+- One large, faint version as ambient texture behind the Home hero or footer — low opacity, `line`/`surface` tones, never loud, never gradient.
 
 Draw it as an inline SVG component `components/ui/Mark.tsx` (typed `size`, `tone` props), single source. Never rasterize it; never duplicate the paths.
 
@@ -51,7 +78,8 @@ Secondary structural device: **hairline rules** (`line`, 1px) that behave like d
 - **Whitespace is the material.** Big vertical rhythm between sections (mobile `4rem`, desktop `7–8rem`). Let content breathe; density is the enemy of premium here.
 - **Grid:** service hub = 2-up (mobile 1-up) card grid. Sub-services (when a service has more than one) render as a **sticky sidebar + scrollspy explorer** — `components/ui/ScrollspyExplorer.tsx`, a generic primitive (not service-specific; reusable for any set of named sections), wrapped by `components/sections/SubServiceExplorer.tsx` for this domain. All sub-services' content sits stacked in one scrollable column; a narrow nav (`border-l-2` accent tick on the active item) stays `sticky` alongside it. The two are wired both ways: scrolling the content updates which nav item is highlighted (`IntersectionObserver`, watching a thin band near the top of the viewport), and clicking a nav item jumps to that section — deliberately an **instant jump** (`scrollIntoView({ behavior: "auto" })`), not a smooth animated scroll, so reaching the last item never means visually gliding past everything in between. Each section shows its eyebrow+mark+name, plain intro, "what we deliver" items (each its own name + full paragraph — `DeliverItem`, not a plain bullet), optional Scope bullets, and Process (numbered, only if present). On mobile the nav becomes a sticky horizontally-scrollable row above the content instead of a side column. Comfortable measure (~68ch max) still applies to prose within each section.
 - **Header:** slim, `paper` with hairline bottom rule on scroll; mark + wordmark left, plain-text nav (Home/About/Services) right, then the Contact item elevated out of the plain nav into a filled `accent` `Button` with the directional icon — one clearly-weighted action, not four equal links. Mobile: mark + wordmark, hamburger; sheet menu groups Services and repeats the same elevated Contact button at the bottom.
-- **Home hero:** a rounded card (`rounded-hero`, 28px — the one deliberate exception to the 4px cap), flush against the header (no gap — the card touches the header's bottom edge directly) with a small fixed side gutter (not the shared `Container`, which would cap it at 1120px and leave large empty margins on wide screens), `bg-accent`. The hero photo is confined to the right ~45–55% only (hidden on mobile), never full-bleed — a dark-teal tint plus a left-edge gradient (solid `accent` fading to transparent) seats it into the panel so there's no hard seam between photo and color. Content sits on the left in `paper` tones: headline (bold 700, the one place display weight goes there) → one-line intro → short rule → CTA row, primary CTA inverted to a `paper` button so it doesn't disappear into the matching-color panel. No badge/eyebrow above the headline (removed — kept the hero to its essential content), no carousel, no floating/overlapping CTA card poking past the card's edge, no rounded "browser frame" wrapping the whole page — those rely on shadow/large-radius devices this system doesn't use beyond this one card.
+- **Home hero:** a rounded card (`rounded-hero`, 28px — the one deliberate exception to the 4px cap), flush against the header (no gap — the card touches the header's bottom edge directly) with a small fixed side gutter (not the shared `Container`, which would cap it at 1120px and leave large empty margins on wide screens), `bg-accent`. The hero photo is confined to the right ~45–55% only (hidden on mobile), never full-bleed — a dark-teal tint plus a left-edge gradient (solid `accent` fading to transparent) seats it into the panel so there's no hard seam between photo and color. Content sits on the left in `paper` tones, using the site-wide **big-name / small-lead** structure above: small mono kicker → headline (the display name, bold 700, `letter-spacing` opened up, tighter `line-height` than the default display clamp so a short tracked word doesn't read loose, the one place display weight goes there) → smaller supporting `lead` sentence → short rule → CTA row, primary CTA inverted to a `paper` button so it doesn't disappear into the matching-color panel. More vertical breathing room between headline and lead than the previous cramped draft ("clumsy" heading — fixed by the tracking/line-height/spacing changes above, not by a different font). No carousel, no floating/overlapping CTA card poking past the card's edge, no rounded "browser frame" wrapping the whole page — those rely on shadow/large-radius devices this system doesn't use beyond this one card.
+- **About hero:** same big-name/small-lead structure as the Home hero, on the plain `paper` background (not the accent card treatment): kicker `ABOUT` (mono, tracked, with the mark) → big display name ("About KAP IP" or similarly short — not the full `about.lead` sentence) → `about.lead` demoted to the smaller supporting `lead` line beneath it. No accent card, no photo panel — this hero stays quiet, consistent with the rest of the About page.
 - **Footer:** the one place the site goes dark — `bg-accent-deep`, all text flipped to `paper`-based tones (`paper` for headings/links, `paper/50–80` for secondary text, matching the same override pattern used on the Hero's accent panel). Three columns: brand (mark + name + tagline + social icons — LinkedIn/Twitter/WhatsApp, `components/ui/icons.tsx`, DUMMY profile URLs from `site.socials` until real ones exist), contact (each item gets a `mono-eyebrow` label — Phone/WhatsApp/Email/Address/Hours — over its value, not a bare list), nav repeat. Below that, a quiet bottom bar (`border-t border-paper/15`) with the copyright line and a "Developed by {site.developer}" credit. Faint ambient mark still sits bottom-right, now rendering light-on-dark instead of light-on-paper.
 
 ### ASCII wireframe — service page (the core template)
@@ -85,6 +113,13 @@ Secondary structural device: **hairline rules** (`line`, 1px) that behave like d
 ```
 Services with zero sub-services (Trademarks, Copyrights, Designs today) skip the explorer entirely — the page is just the service intro + CTA.
 
+## Imagery
+**Direction:** life-sciences-forward motifs (molecules, DNA strands, protein structures, periodic-table fragments) as the dominant visual language — this reflects KAP's primary practice. But the site must never read as life-sciences-only: the domains grid (all 10 fields from `about.ts`, including electrical, mechanical, and AI) sits prominently near the hero so breadth is established immediately, and service pages (Trademarks, Copyrights, Designs, and the non-life-sciences corners of Patents) use neutral or mixed motifs rather than forcing a molecule into every panel. Life sciences is the primary visual language, not the only one.
+
+**Format target:** lightweight SVG/vector for iconographic and motif work (scales cleanly, tiny payload); well-compressed WebP/AVIF for anything photographic. Mobile-first — no asset justifies a perf hit on a slow connection.
+
+**Current state:** real imagery arrives later (client-provided PNGs). Until then, dummy placeholder PNGs stand in — generated via `scripts/placeholder-team-photos.mjs` (`npm run placeholder-team`) for people, `scripts/placeholder-images.mjs` (`npm run placeholders`) for service motifs. Same rule as the rest of the data layer: placeholders keep the real shape (file paths, aspect ratios) so the swap to real assets is mechanical.
+
 ## Motion (lib/motion.ts, plus one dedicated scroll-linked primitive)
 Restrained — but perceptible. The site should feel *composed*, not animated, and not so quick it reads as a flicker.
 - **Heading color wipe:** every heading (`components/ui/ScrollColorHeading.tsx`) starts in a muted tone (`ink-soft` on paper/surface backgrounds, `paper/40` on the Home hero's accent panel) and sweeps left-to-right to its full color (`ink` / `paper`) as it's scrolled through the viewport — a `background-clip: text` gradient whose stop position is driven continuously by scroll offset (`framer-motion`'s `useScroll` + `useTransform` + `useMotionTemplate`, not `getSectionReveal`), so it tracks scrolling back up too, not just a one-shot reveal. Wired into `SectionHeading` (covering most headings sitewide) plus the hand-rolled ones (Home hero, About hero, credibility/expertise h3s, sub-service deliver-item names) — never re-implemented per call site. Small mono-eyebrow-styled labels that happen to use an `h2`/`h3` tag for outline purposes (sub-service names, "What we deliver"/"Scope"/"Process" labels) are excluded — visually they're labels, not headings. Skipped entirely under `prefers-reduced-motion` (renders the final color statically).
@@ -95,8 +130,17 @@ Restrained — but perceptible. The site should feel *composed*, not animated, a
 - **Home hero wipe reveal:** the hero uses a different entrance than every other section — a left-to-right "curtain" reveal (`getWipeReveal`, `clip-path: inset()` animated from fully-clipped to fully-shown) instead of the usual up-fade, since the request was specifically for the green panel and its text to sweep in from the left rather than rise from below. The whole card (panel + photo) wipes in first (~0.5s), then the headline, intro, rule, and CTA row sweep in after it in their own staggered sequence (delays 0.5s→0.9s) — same staggering as before, just swept instead of faded. This is the one section that doesn't use `getSectionReveal`; everywhere else keeps the fade-up. *(There was previously a mark-draw-on-load moment in a hero badge; both the badge and the draw animation were removed — `getMarkDraw` no longer exists in `lib/motion.ts`.)*
 - `prefers-reduced-motion`: all reveals render instantly at their final state, no stagger delay. Read via `useSafeReducedMotion` (`lib/motion.ts`) — built on `useSyncExternalStore`, not Framer Motion's own `useReducedMotion`, to avoid a hydration mismatch between server and a reduced-motion client.
 
+### Visual/interactive shift — less text, more structured blocks
+Direction going forward: reduce copy density in favor of structured visual blocks (stat tiles, domain grid, team card) and a small, restrained set of interactions layered on top of the existing motion primitives above — not a departure from them.
+- **Hero motif assembles on load:** the life-sciences motif (molecule/DNA form) in the hero builds itself in on first paint — a bounded, one-shot entrance, not a looping animation.
+- **Stat count-up on scroll-into-view:** the numbers/stats strip (`data/stats.ts`) counts up from 0 to its value once, triggered the same way as `getSectionReveal` (`viewport={{ once: true }}`), not on every scroll pass.
+- **Hover states on cards/domains:** the existing `line`→`accent` rule/underline + 1–2px lift pattern (see Hover, above) extends to the stat tiles, domain-grid items, and the team card — no new hover language, same restrained one.
+- All of the above are reduced-motion-safe via the same `useSafeReducedMotion` gate — count-ups render at their final value instantly, the hero motif renders fully assembled, hover lift/underline still work (hover isn't motion-sickness-triggering, stays on).
+
+**Guardrails:** no heavy video backgrounds, no scroll-jacking (native scroll stays native), all imagery lazy-loaded below the fold, perf budget from the Quality floor below is non-negotiable. Interactions exist to serve clarity — draw the eye to what matters — never spectacle for its own sake.
+
 ## Quality floor (build to it, don't announce it)
 Responsive to 360px. Visible keyboard focus (accent ring). Reduced motion respected. Real contrast (ink on paper passes AA). Images sized and lazy. Tap targets ≥44px. Mono eyebrows are decorative-but-labelled — real heading text stays in the heading element.
 
 ## Token → Tailwind mapping
-`tailwind.config.ts` extends: `colors` (table above), `fontFamily` (display/body/mono → CSS vars), `fontSize` (the type scale above: `display-xl`, `display-l`, `h2`, `h3`, `body`, `small`, `mono-eyebrow`, each with its own line-height/tracking), `maxWidth.container`, `borderRadius.card: 4px`. No component may reference a color/size not defined here.
+`tailwind.config.ts` extends: `colors` (table above, functional palette only — the brand ramp is documentation-only until a component needs it), `fontFamily` (display/body/mono → CSS vars), `fontSize` (the type scale above: `display-xl`, `display-l`, `lead`, `h2`, `h3`, `body`, `small`, `mono-eyebrow`, each with its own line-height/tracking), `maxWidth.container`, `borderRadius.card: 4px`. No component may reference a color/size not defined here.
