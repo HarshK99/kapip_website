@@ -22,7 +22,7 @@ export default function ServiceDetail({ service }: ServiceDetailProps) {
       variants={getSectionReveal(prefersReducedMotion)}
     >
       <Container className="flex flex-col gap-6">
-        <SectionHeading eyebrow={service.name} heading={service.precise} level="h1" />
+        <SectionHeading heading={service.name} lead={service.precise} level="h1" />
         <p className="max-w-prose font-body text-body text-ink-soft">{service.plainIntro}</p>
 
         {service.overview && service.overview.length > 0 ? (

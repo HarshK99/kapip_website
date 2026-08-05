@@ -26,7 +26,7 @@ export default function ServicesOverview() {
     >
       <Container className="flex flex-col gap-10">
         {/* DUMMY heading copy */}
-        <SectionHeading eyebrow="What we do" heading="Four ways we protect your ideas" level="h2" />
+        <SectionHeading heading="What we do" lead="Four ways we protect your ideas." level="h2" />
         <motion.div
           className="grid gap-6 sm:grid-cols-2"
           variants={getStaggerContainer(prefersReducedMotion)}

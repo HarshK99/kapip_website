@@ -20,7 +20,7 @@ export default function ContactBlock() {
     >
       <Container className="flex flex-col gap-12">
         {/* DUMMY framing copy */}
-        <SectionHeading eyebrow="Contact" heading="Tell us what you're protecting" level="h1" />
+        <SectionHeading heading="Contact" lead="Tell us what you're protecting." level="h1" />
 
         <div className="grid gap-12 md:grid-cols-2 md:gap-16">
           <div className="flex flex-col gap-3 font-body text-body text-ink-soft">

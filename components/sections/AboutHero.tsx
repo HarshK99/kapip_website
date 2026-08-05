@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { about } from "@/data/about";
 import Container from "@/components/ui/Container";
-import ScrollColorHeading from "@/components/ui/ScrollColorHeading";
+import SectionHeading from "@/components/ui/SectionHeading";
 import { getSectionReveal, sectionRevealViewport, useSafeReducedMotion } from "@/lib/motion";
 
 export default function AboutHero() {
@@ -18,15 +18,7 @@ export default function AboutHero() {
       variants={getSectionReveal(prefersReducedMotion)}
     >
       <Container className="flex flex-col gap-6">
-        <span className="font-mono text-mono-eyebrow uppercase tracking-[0.12em] text-ink-soft">
-          The Firm
-        </span>
-        <ScrollColorHeading
-          as="h1"
-          className="max-w-2xl font-display text-display-l font-semibold tracking-tight md:text-display-xl"
-        >
-          {about.lead}
-        </ScrollColorHeading>
+        <SectionHeading heading="The Firm" lead={about.lead} level="h1" />
         <p className="max-w-prose font-body text-body text-ink-soft">{about.intro}</p>
         <p className="max-w-prose font-body text-body text-ink-soft">{about.mission}</p>
       </Container>

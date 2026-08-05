@@ -1,5 +1,5 @@
-import { useSyncExternalStore } from "react";
-import type { Variants } from "framer-motion";
+import { useEffect, useRef, useState, useSyncExternalStore, type RefObject } from "react";
+import { animate, useInView, type Variants } from "framer-motion";
 
 // Restrained variants (DESIGN.md — Motion). One set, reused everywhere.
 // Reduced-motion-safe: components read `prefersReducedMotion` (via
@@ -95,3 +95,30 @@ const wipeRevealInstant: Variants = {
 
 export const getWipeReveal = (prefersReducedMotion: boolean): Variants =>
   prefersReducedMotion ? wipeRevealInstant : wipeRevealMotion;
+
+// Counts up from 0 to `target` once the element scrolls into view (Home
+// stats strip). Reduced-motion-safe: renders the final value immediately
+// instead of animating. Returns a ref to attach to the counting element and
+// the current display value.
+export function useCountUp<T extends HTMLElement = HTMLElement>(
+  target: number,
+  prefersReducedMotion: boolean,
+  duration = 1.2
+): { ref: RefObject<T | null>; value: number } {
+  const ref = useRef<T | null>(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
+  const [animatedValue, setAnimatedValue] = useState(0);
+
+  useEffect(() => {
+    if (!inView || prefersReducedMotion) return;
+    const controls = animate(0, target, {
+      duration,
+      ease: "easeOut",
+      onUpdate: (latest) => setAnimatedValue(Math.round(latest)),
+    });
+    return () => controls.stop();
+  }, [inView, prefersReducedMotion, target, duration]);
+
+  const value = prefersReducedMotion ? target : inView ? animatedValue : 0;
+  return { ref, value };
+}

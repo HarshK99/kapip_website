@@ -52,7 +52,7 @@ export const site: Site = {
     {
       label: "Registered Office",
       line1: "1402, A Block, Royal Aawas Tirupati",
-      line2: "Ahom Gaon, near Royal Global University, Betkuchi",
+      line2: "Royal Chowk, near Royal Global University, Betkuchi",
       city: "Guwahati",
       state: "Assam",
       pincode: "781035",

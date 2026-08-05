@@ -40,7 +40,7 @@ export default function Hero() {
           <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-accent to-transparent" />
         </div>
 
-        <div className="relative flex flex-col gap-5 px-5 py-12 md:w-1/2 md:px-6 md:py-16 lg:w-[55%] lg:px-8">
+        <div className="relative flex flex-col gap-6 px-5 py-12 md:w-1/2 md:px-6 md:py-16 lg:w-[55%] lg:gap-7 lg:px-8">
           <motion.div
             initial="hidden"
             animate="visible"
@@ -50,10 +50,10 @@ export default function Hero() {
             <ScrollColorHeading
               as="h1"
               tone="paper"
-              className="max-w-xl font-serif text-display-l font-bold tracking-tighter md:text-display-xl"
+              className="max-w-xl font-serif text-display-l font-bold leading-[0.95] tracking-wide md:text-display-xl"
               style={{ fontVariationSettings: '"opsz" 144, "SOFT" 20, "WONK" 60' }}
             >
-              {site.tagline}
+              {site.brandLine}
             </ScrollColorHeading>
           </motion.div>
 
@@ -62,11 +62,9 @@ export default function Hero() {
             animate="visible"
             variants={getWipeReveal(prefersReducedMotion)}
             transition={{ delay: delay(0.65) }}
-            className="max-w-md font-body text-body text-paper/80"
+            className="max-w-md font-body text-lead text-paper/80"
           >
-            {/* DUMMY supporting copy */}
-            We help you search, draft, file, and defend the ideas that make your business
-            valuable.
+            {site.tagline}
           </motion.p>
 
           <motion.div
@@ -75,7 +73,7 @@ export default function Hero() {
             variants={getWipeReveal(prefersReducedMotion)}
             transition={{ delay: delay(0.78) }}
           >
-            <Rule variant="short" className="border-paper/30" />
+            <Rule variant="short" tone="gradient" />
           </motion.div>
 
           <motion.div

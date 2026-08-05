@@ -19,7 +19,7 @@ export default function AboutNetwork() {
       variants={getSectionReveal(prefersReducedMotion)}
     >
       <Container className="flex flex-col gap-10">
-        <SectionHeading eyebrow="Network & team" heading="Built on relationships" level="h2" />
+        <SectionHeading heading="Network & team" lead="Built on relationships." level="h2" />
         <div className="flex flex-col gap-8 md:flex-row md:gap-16">
           <div className="flex flex-1 flex-col gap-3">
             <ScrollColorHeading as="h3" className="font-display text-h3 font-semibold">

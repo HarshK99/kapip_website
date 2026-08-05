@@ -20,7 +20,7 @@ export default function AboutExpertise() {
       variants={getSectionReveal(prefersReducedMotion)}
     >
       <Container className="flex flex-col gap-10">
-        <SectionHeading eyebrow="Expertise" heading="Where our work concentrates" level="h2" />
+        <SectionHeading heading="Expertise" lead="Where our work concentrates." level="h2" />
 
         <div className="flex flex-col gap-8 md:flex-row md:gap-16">
           <div className="flex flex-1 flex-col gap-4">

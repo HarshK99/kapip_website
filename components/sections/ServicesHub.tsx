@@ -27,8 +27,8 @@ export default function ServicesHub() {
       <Container className="flex flex-col gap-10">
         {/* DUMMY framing copy */}
         <SectionHeading
-          eyebrow="Services"
-          heading="Four disciplines, one standard of precision"
+          heading="Services"
+          lead="Four disciplines, one standard of precision."
           level="h1"
         />
         <motion.div

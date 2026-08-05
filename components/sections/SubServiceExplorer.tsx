@@ -1,7 +1,6 @@
 import type { SubService } from "@/data/services";
 import ScrollspyExplorer, { type ScrollspyExplorerItem } from "@/components/ui/ScrollspyExplorer";
-import Mark from "@/components/ui/Mark";
-import Rule from "@/components/ui/Rule";
+import SectionHeading from "@/components/ui/SectionHeading";
 import ScrollColorHeading from "@/components/ui/ScrollColorHeading";
 
 export type SubServiceExplorerProps = {
@@ -14,15 +13,7 @@ export default function SubServiceExplorer({ subServices }: SubServiceExplorerPr
     label: subService.name,
     content: (
       <div className="flex flex-col gap-8">
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-2">
-            <Mark size={14} tone="accent" />
-            <h2 className="font-mono text-mono-eyebrow uppercase tracking-[0.12em] text-ink-soft">
-              {subService.name}
-            </h2>
-          </div>
-          <Rule variant="short" />
-        </div>
+        <SectionHeading heading={subService.name} lead={subService.precise} level="h2" />
 
         <p className="max-w-prose font-body text-body text-ink-soft">{subService.plainIntro}</p>
 

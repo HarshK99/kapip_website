@@ -2,6 +2,17 @@
 @config "../tailwind.config.ts";
 
 @layer base {
+  :root {
+    /* Decorative brand ramp gradient — logo/signature mark, one hero accent,
+       thin dividers/underlines only. Never behind body text. Provisional
+       until synced to the final logo (DESIGN.md — Palette). */
+    --brand-gradient: linear-gradient(120deg, #1b2c74 0%, #14827a 38%, #2e9e5b 68%, #aec61c 100%);
+    /* Text-safe variant — brand-lime dropped (1.85:1 against paper, fails
+       AA). Only these 3 stops clear the large-text 3:1 floor. Use this, not
+       --brand-gradient, for any text fill (DESIGN.md — Palette). */
+    --brand-gradient-text: linear-gradient(120deg, #1b2c74 0%, #14827a 45%, #2e9e5b 100%);
+  }
+
   body {
     @apply bg-paper text-ink font-body antialiased;
   }

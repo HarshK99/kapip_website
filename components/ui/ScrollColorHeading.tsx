@@ -9,8 +9,8 @@ export type ScrollColorHeadingProps = {
   as?: "h1" | "h2" | "h3";
   children: ReactNode;
   className?: string;
-  /** "ink" for headings on paper/surface backgrounds (default), "paper" for headings on dark accent panels (the Home hero). */
-  tone?: "ink" | "paper";
+  /** "ink" for headings on paper/surface backgrounds (default), "paper" for headings on dark accent panels (the Home hero), "brand" for a static brand-gradient fill — `SectionHeading`'s name text only (DESIGN.md — Palette → Two gradient variables). */
+  tone?: "ink" | "paper" | "brand";
   /** Merged with the internal gradient/color style — e.g. font-variation-settings for a variable font. */
   style?: CSSProperties;
 };
@@ -28,6 +28,13 @@ const tones = {
 // framer-motion's useScroll — scrolling back up un-resolves the color too.
 // Single shared primitive: wherever a heading needs this, use this component
 // rather than re-implementing the gradient/scroll wiring per call site.
+//
+// tone="brand" is a different, simpler treatment: a static brand-gradient
+// text fill, no scroll-linked wipe. It skips the motion/scroll wiring below
+// entirely (the hooks still run, per rules-of-hooks, but their output goes
+// unused on this path) — a moving 2-color wipe doesn't translate to a
+// 3-stop brand gradient, and a static fill reads more like a signature mark
+// than an animated one would.
 export default function ScrollColorHeading({
   as = "h2",
   children,
@@ -42,8 +49,26 @@ export default function ScrollColorHeading({
     offset: ["start 0.9", "start 0.35"],
   });
   const progress = useTransform(scrollYProgress, [0, 1], [0, 100]);
-  const { base, final } = tones[tone];
+  const { base, final } = tones[tone === "brand" ? "ink" : tone];
   const backgroundImage = useMotionTemplate`linear-gradient(to right, ${final} 0%, ${final} calc(${progress}% - 6%), ${base} calc(${progress}% + 6%), ${base} 100%)`;
+
+  if (tone === "brand") {
+    const Tag = as;
+    return (
+      <Tag
+        className={className}
+        style={{
+          ...style,
+          backgroundImage: "var(--brand-gradient-text)",
+          WebkitBackgroundClip: "text",
+          backgroundClip: "text",
+          color: "transparent",
+        }}
+      >
+        {children}
+      </Tag>
+    );
+  }
 
   if (prefersReducedMotion) {
     const Tag = as;

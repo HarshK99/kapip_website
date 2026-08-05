@@ -80,7 +80,7 @@ export default function Header() {
     >
       <Container className="flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2" onClick={() => setMobileOpen(false)}>
-          <Mark size={18} tone="accent" />
+          <Mark size={18} tone="gradient" />
           <span className="font-display text-body font-semibold tracking-tight text-ink">
             {site.name}
           </span>

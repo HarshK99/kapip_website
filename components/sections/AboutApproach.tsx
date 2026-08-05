@@ -23,7 +23,7 @@ export default function AboutApproach() {
       variants={getSectionReveal(prefersReducedMotion)}
     >
       <Container className="flex flex-col gap-10">
-        <SectionHeading eyebrow="Approach" heading="How we work" level="h2" />
+        <SectionHeading heading="Approach" lead="How we work." level="h2" />
         <p className="max-w-prose font-body text-body text-ink-soft">{about.approach}</p>
 
         <motion.div

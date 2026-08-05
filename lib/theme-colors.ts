@@ -6,4 +6,9 @@ export const themeColors = {
   ink: "#14171A",
   inkSoft: "#4A5158",
   paper: "#FBFAF7",
+  // Decorative brand ramp — see tailwind.config.ts brand-* colors. Provisional.
+  brandIndigo: "#1B2C74",
+  brandTeal: "#14827A",
+  brandGreen: "#2E9E5B",
+  brandLime: "#AEC61C",
 } as const;

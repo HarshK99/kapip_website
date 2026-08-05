@@ -19,7 +19,7 @@ export default function AboutPreview() {
       variants={getSectionReveal(prefersReducedMotion)}
     >
       <Container className="flex flex-col gap-6">
-        <SectionHeading eyebrow="About" heading={about.lead} level="h2" />
+        <SectionHeading heading="About" lead={about.lead} level="h2" />
         <p className="max-w-prose font-body text-body text-ink-soft">{about.intro}</p>
         <div>
           <Button href="/about" variant="ghost">
