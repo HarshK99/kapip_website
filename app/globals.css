@@ -11,6 +11,12 @@
        AA). Only these 3 stops clear the large-text 3:1 floor. Use this, not
        --brand-gradient, for any text fill (DESIGN.md — Palette). */
     --brand-gradient-text: linear-gradient(120deg, #1b2c74 0%, #14827a 45%, #2e9e5b 100%);
+    /* On-accent variant — for gradient text sitting on the dark `accent`
+       panel (the Home hero), not `paper`. The trim inverts: brand-indigo is
+       the one that fails here (dark-on-dark), so it's dropped instead of
+       lime; brand-lime (light-on-dark) is exactly what reads well against a
+       dark background. teal → green → lime only. */
+    --brand-gradient-text-on-accent: linear-gradient(120deg, #14827a 0%, #2e9e5b 50%, #aec61c 100%);
   }
 
   body {
@@ -20,4 +26,48 @@
   :focus-visible {
     @apply outline-accent outline-2 outline-offset-2;
   }
+}
+
+/* Home hero illustration (HeroIllustration.tsx) — the floating loop lives
+   in CSS, not JS, so it's a GPU-composited animation the pointer-parallax
+   rAF loop layers on top of via a separate nested <g>, never fighting the
+   same `transform` on one element. --hero-illustration-play is toggled by
+   an IntersectionObserver in the component (paused while off-screen). */
+@keyframes hero-illustration-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0);
+  }
+}
+
+.hero-illustration-float {
+  animation: hero-illustration-float 20s ease-in-out infinite;
+  animation-play-state: var(--hero-illustration-play, running);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-illustration-float {
+    animation: none;
+  }
+}
+
+/* Soft radial highlight that follows the cursor over the illustration.
+   Position/opacity are written directly by the rAF loop in
+   HeroIllustration.tsx — never through React state. Color mirrors the
+   `paper` token (#FBFAF7). */
+.hero-illustration-highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 340px;
+  height: 340px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(251, 250, 247, 0.16) 0%, rgba(251, 250, 247, 0) 70%);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
 }

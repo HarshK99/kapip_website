@@ -9,8 +9,10 @@ export type ScrollColorHeadingProps = {
   as?: "h1" | "h2" | "h3";
   children: ReactNode;
   className?: string;
-  /** "ink" for headings on paper/surface backgrounds (default), "paper" for headings on dark accent panels (the Home hero), "brand" for a static brand-gradient fill — `SectionHeading`'s name text only (DESIGN.md — Palette → Two gradient variables). */
+  /** "ink" for headings on paper/surface backgrounds (default), "paper" for headings on dark accent panels, "brand" for a static brand-gradient fill (DESIGN.md — Palette → Three gradient variables). */
   tone?: "ink" | "paper" | "brand";
+  /** Which CSS var the "brand" tone reads its gradient from. Default is calibrated for text on `paper`/`surface`; pass `--brand-gradient-text-on-accent` on the dark Home hero panel instead (DESIGN.md — Palette). No effect for tone !== "brand". */
+  brandGradientVar?: string;
   /** Merged with the internal gradient/color style — e.g. font-variation-settings for a variable font. */
   style?: CSSProperties;
 };
@@ -40,6 +42,7 @@ export default function ScrollColorHeading({
   children,
   className,
   tone = "ink",
+  brandGradientVar = "--brand-gradient-text",
   style,
 }: ScrollColorHeadingProps) {
   const prefersReducedMotion = useSafeReducedMotion();
@@ -59,7 +62,7 @@ export default function ScrollColorHeading({
         className={className}
         style={{
           ...style,
-          backgroundImage: "var(--brand-gradient-text)",
+          backgroundImage: `var(${brandGradientVar})`,
           WebkitBackgroundClip: "text",
           backgroundClip: "text",
           color: "transparent",

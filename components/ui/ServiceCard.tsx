@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Service } from "@/data/services";
+import ExploreAffordance from "@/components/ui/ExploreAffordance";
 import { cn } from "@/lib/utils";
 
 export type ServiceCardProps = {
@@ -20,9 +21,7 @@ export default function ServiceCard({ service, className }: ServiceCardProps) {
         <span className="font-display text-h3 font-semibold text-ink">{service.name}</span>
         </div>
       <p className="font-body text-body text-ink-soft">{service.summary}</p>
-      <span className="mt-auto inline-flex items-center gap-1 font-mono text-mono-eyebrow uppercase tracking-[0.12em] text-ink-soft transition-colors group-hover:text-accent">
-        Explore
-      </span>
+      <ExploreAffordance className="mt-auto" />
     </Link>
   );
 }

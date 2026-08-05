@@ -27,8 +27,10 @@ const variantClasses: Record<Variant, string> = {
 };
 
 // Trailing directional glyph, opt-in via `icon` — reused wherever a CTA
-// wants the "action with direction" affordance (header CTA, hero CTA, ...).
-function ButtonIcon() {
+// wants the "action with direction" affordance (header CTA, hero CTA,
+// NodeExplorer's active node, ...). Exported so it's the single source of
+// this glyph rather than redrawn per call site.
+export function ButtonIcon() {
   return (
     <span
       className="inline-flex h-6 w-6 flex-none items-center justify-center rounded-card border border-current"
