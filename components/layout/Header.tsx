@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/data/site";
 import { getServices } from "@/data/services";
 import Container from "@/components/ui/Container";
-import Mark from "@/components/ui/Mark";
 import Button from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
@@ -80,7 +80,7 @@ export default function Header() {
     >
       <Container className="flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2" onClick={() => setMobileOpen(false)}>
-          <Mark size={18} tone="gradient" />
+          <Image src="/images/logo.svg" alt="" width={33} height={32} className="h-10 w-auto" priority />
           <span className="font-display text-body font-semibold tracking-tight text-ink">
             {site.name}
           </span>

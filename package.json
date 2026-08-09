@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "placeholders": "tsx scripts/placeholder-images.mjs",
-    "placeholder-team": "tsx scripts/placeholder-team-photos.mjs"
+    "placeholder-team": "tsx scripts/placeholder-team-photos.mjs",
+    "sync-logo": "node scripts/sync-logo.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { site, telHref, whatsappHref, mailHref, formattedAddress } from "@/data/site";
 import Container from "@/components/ui/Container";
@@ -24,7 +25,7 @@ export default function Footer() {
       <Container className="relative flex flex-col gap-10 py-16 md:flex-row md:justify-between md:py-20">
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2">
-            <Mark size={16} tone="accent" className="text-paper" />
+            <Image src="/images/logo.svg" alt="" width={25} height={24} className="h-6 w-auto" />
             <span className="font-display text-body font-semibold text-paper">{site.name}</span>
           </div>
           <p className="max-w-sm font-body text-body text-paper/70">{site.tagline}</p>
@@ -98,6 +99,10 @@ export default function Footer() {
         </Container>
       </div>
 
+      {/* Ambient texture stays the flat-line SVG mark, not the raster logo —
+          DESIGN.md wants this instance "quiet, never gradient"; the vector
+          glyph also stays crisp at 220px where a rasterized PNG this size
+          would visibly soften. */}
       <Mark
         size={220}
         tone="faint"
