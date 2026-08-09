@@ -80,7 +80,7 @@ export default function Header() {
     >
       <Container className="flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2" onClick={() => setMobileOpen(false)}>
-          <Image src="/images/logo.svg" alt="" width={33} height={32} className="h-10 w-auto" priority />
+          <Image src="/images/logo.svg" alt="" width={33} height={32} className="h-15 w-auto" priority />
           <span className="font-display text-body font-semibold tracking-tight text-ink">
             {site.name}
           </span>

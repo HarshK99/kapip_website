@@ -40,6 +40,7 @@ export default function WhyKAP() {
     >
       <Container className="flex flex-col gap-10">
         {/* DUMMY heading copy */}
+        <SectionHeading heading="Why KAP"  level="h2" />
         <motion.div
           className="grid gap-8 sm:grid-cols-3"
           variants={getStaggerContainer(prefersReducedMotion)}

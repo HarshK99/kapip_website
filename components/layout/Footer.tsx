@@ -25,7 +25,17 @@ export default function Footer() {
       <Container className="relative flex flex-col gap-10 py-16 md:flex-row md:justify-between md:py-20">
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2">
-            <Image src="/images/logo.svg" alt="" width={25} height={24} className="h-6 w-auto" />
+            {/* Footer sits on the dark accent-deep panel — the SVG's gradient
+                fills are hardcoded per-path, not currentColor, so a plain
+                brightness-0 + invert filter flattens it to solid white
+                instead of maintaining a separate white logo asset. */}
+            <Image
+              src="/images/logo.svg"
+              alt=""
+              width={25}
+              height={24}
+              className="h-6 w-auto brightness-0 invert"
+            />
             <span className="font-display text-body font-semibold text-paper">{site.name}</span>
           </div>
           <p className="max-w-sm font-body text-body text-paper/70">{site.tagline}</p>

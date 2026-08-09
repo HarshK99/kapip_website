@@ -19,7 +19,9 @@ export type Office = {
 export type Site = {
   name: string;
   tagline: string;
-  /** brand expansion / positioning line — "Knowledge Assured Protection" */
+  /** Short positioning statement — the Home hero's big headline. Not the
+      full tagline sentence (too long to read well at hero display size);
+      keep this to a handful of words. */
   brandLine: string;
   /** E.164, used for tel: — DUMMY */
   phone: string;
@@ -43,8 +45,8 @@ export type Site = {
 
 export const site: Site = {
   name: "KAP IP",
-  tagline: "Strategic patent and IP solutions for innovators worldwide.",
-  brandLine: "Knowledge Assured Protection",
+  tagline: "We help you search, draft, file, and defend the ideas that make your business valuable",
+  brandLine: "Patent and IP solutions for innovators worldwide",
   phone: "+910000000000", // DUMMY — replace with real E.164 number
   whatsapp: "910000000000", // DUMMY — digits only, country code + number
   email: "hello@example.com", // DUMMY — awaiting real email
