@@ -9,10 +9,18 @@ const eslintConfig = defineConfig([
   globalIgnores([
     // Default ignores of eslint-config-next:
     ".next/**",
+    ".next.stale-*/**",
     "out/**",
     "build/**",
     "next-env.d.ts",
   ]),
+  // deploy.js is a plain CommonJS Node script (not part of the app bundle).
+  {
+    files: ["deploy.js"],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;

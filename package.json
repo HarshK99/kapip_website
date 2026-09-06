@@ -12,7 +12,8 @@
     "placeholders": "tsx scripts/placeholder-images.mjs",
     "placeholder-team": "tsx scripts/placeholder-team-photos.mjs",
     "placeholder-blog": "tsx scripts/placeholder-blog.mjs",
-    "sync-logo": "node scripts/sync-logo.mjs"
+    "sync-logo": "node scripts/sync-logo.mjs",
+    "deploy": "npm run build && node deploy.js"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -29,6 +30,8 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
+    "dotenv": "^16.4.5",
+    "ftp-deploy-static": "file:../../Apps/packages_personal/deploy-package",
     "playwright": "^1.62.1",
     "sharp": "^0.34.5",
     "tailwindcss": "^4",
