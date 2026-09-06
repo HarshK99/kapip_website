@@ -1,42 +1,46 @@
-// Generates lightweight neutral SVG placeholders in public/images, one per
-// service in data/services.ts. Stand-ins only — swapped for real imagery on
-// content handover; re-run via `npm run placeholders`.
+// Generates dark "laboratory nocturne" SVG placeholders in
+// public/images/services/, one per service in data/services.ts — stand-ins
+// until the real generated images land (see docs/IMAGE-PROMPTS.md § P2).
+// Re-run via `npm run placeholders`.
 import { writeFile, mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { getServices } from "../data/services.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const outDir = path.join(__dirname, "..", "public", "images");
+const outDir = path.join(__dirname, "..", "public", "images", "services");
 
-const WIDTH = 1200;
-const HEIGHT = 800;
+const WIDTH = 1600;
+const HEIGHT = 900; // 16:9
 
-const PAPER = "#FBFAF7";
-const SURFACE = "#F1EFEA";
-const LINE = "#DAD6CE";
-const INK_SOFT = "#4A5158";
+const INK_STRONG = "#0A0C0E";
+const ACCENT = "#0E5C4A";
+const ACCENT_DEEP = "#0A3F33";
 
-function buildSvg(label) {
+function buildSvg(label, seed) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}">
-  <rect width="${WIDTH}" height="${HEIGHT}" fill="${SURFACE}"/>
-  <rect x="0.5" y="0.5" width="${WIDTH - 1}" height="${HEIGHT - 1}" fill="none" stroke="${LINE}"/>
-  <rect x="40" y="40" width="${WIDTH - 80}" height="${HEIGHT - 80}" fill="${PAPER}"/>
-  <path d="M 72 72 L 72 108 M 72 72 L 108 72" stroke="${LINE}" stroke-width="2" fill="none"/>
-  <path d="M ${WIDTH - 72} ${HEIGHT - 72} L ${WIDTH - 72} ${HEIGHT - 108} M ${WIDTH - 72} ${HEIGHT - 72} L ${WIDTH - 108} ${HEIGHT - 72}" stroke="${LINE}" stroke-width="2" fill="none"/>
-  <text x="50%" y="52%" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="28" letter-spacing="4" fill="${INK_SOFT}">${label.toUpperCase()}</text>
+  <defs>
+    <radialGradient id="g" cx="${30 + seed * 12}%" cy="35%" r="85%">
+      <stop offset="0%" stop-color="${ACCENT_DEEP}"/>
+      <stop offset="55%" stop-color="${INK_STRONG}"/>
+      <stop offset="100%" stop-color="${INK_STRONG}"/>
+    </radialGradient>
+  </defs>
+  <rect width="${WIDTH}" height="${HEIGHT}" fill="url(#g)"/>
+  <circle cx="${28 + seed * 14}%" cy="34%" r="90" fill="none" stroke="${ACCENT}" stroke-opacity="0.35" stroke-width="1.5"/>
+  <text x="6%" y="90%" font-family="monospace" font-size="24" letter-spacing="5" fill="${ACCENT}" fill-opacity="0.5">${label.toUpperCase()}</text>
 </svg>`;
 }
 
 async function main() {
   await mkdir(outDir, { recursive: true });
   const services = getServices();
-  for (const service of services) {
-    const svg = buildSvg(service.name);
+  services.forEach(async (service, i) => {
+    const svg = buildSvg(service.name, i);
     const filePath = path.join(outDir, `${service.slug}.svg`);
     await writeFile(filePath, svg, "utf8");
     console.log(`wrote ${path.relative(process.cwd(), filePath)}`);
-  }
+  });
 }
 
 main();

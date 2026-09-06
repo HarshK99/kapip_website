@@ -44,3 +44,63 @@ export function TwitterIcon(props: SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+export function PatentIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path
+        d="M6.5 3.5h7l4 4v5.25M13.5 3.5v4h4M9 10h5M9 13h3"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M6.5 3.5v17h6" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+      <circle cx="16.5" cy="16.5" r="3" stroke="currentColor" strokeWidth="1.5" />
+      <path d="m14.8 19 -.3 2 2-1 2 1-.3-2" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+export function TrademarkIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path
+        d="M4 5.5h8M8 5.5v8M14.5 13.5v-8l2.75 4 2.75-4v8"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M4 18.5h16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function CopyrightIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <circle cx="12" cy="12" r="8.5" stroke="currentColor" strokeWidth="1.5" />
+      <path
+        d="M14.75 9.5A3.5 3.5 0 1 0 14.75 14.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+export function DesignIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path
+        d="m12 3.5 7.5 5v7L12 20.5l-7.5-5v-7l7.5-5Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      <path d="m4.75 8.75 7.25 5 7.25-5M12 13.75v6.25" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+    </svg>
+  );
+}

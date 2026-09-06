@@ -1,161 +1,658 @@
 # DESIGN.md — KAP IP
 
-Direction: **precise, modern-minimal.** The feeling is a well-drafted document — exact margins, confident type, nothing wasted. Trust comes from restraint and typography. Spend all boldness on one signature element; keep everything else quiet.
+> This doc describes the **target** design. Where code is still catching up, see
+> **Migration notes** at the bottom. It is not frozen — if something here reads
+> as boring, templated, or timid, change it and update this file.
 
-## Anti-brief (what this must never look like)
-No navy + gold serif. No scales/gavel/columns iconography. No stock handshakes or generic team photos as filler. No heavy shadows, no gradient washes, no glassmorphism, no cursor effects. No cream (#F4F1EA) + terracotta. No 01/02/03 numbered markers unless the content is a genuine ordered process (the patent *Process* steps qualify; nothing else does). If a change makes it look like a template law firm, it's wrong.
+## Direction — precision as confidence
 
-## Palette — named tokens (single source: tailwind.config.ts)
-A restrained, precise palette. Ink + paper base, one confident accent drawn from the "granted/registered" idea (a deep authoritative green-teal — reads as *approved*, not festive), plus a warm-neutral for surfaces so it never feels cold or clinical.
+The reference object is the **front page of a granted patent**: a seal, a number, a
+priority date, an abstract. Sparse, exact, authoritative — every element earns
+its place and then commits fully. That is the feeling. Not "quiet and safe" —
+*decisive*. Restraint governs **how many** elements appear; it does not mute the
+few that remain. Those go big, tight, and high-contrast.
 
-| Token            | Hex        | Role |
-|------------------|------------|------|
-| `ink`            | `#14171A`  | primary text, near-black with a cool cast |
-| `ink-soft`       | `#4A5158`  | secondary text, captions |
-| `paper`          | `#FBFAF7`  | page background, warm off-white (not cream, not stark white) |
-| `surface`        | `#F1EFEA`  | cards, section bands |
-| `line`           | `#DAD6CE`  | hairline rules, borders |
-| `accent`         | `#0E5C4A`  | the "granted" green-teal — links, active, the mark |
-| `accent-deep`    | `#0A3F33`  | hover/pressed, dense fills |
+Three rules carry it:
+1. **One decisive move per screen.** A massive headline, a single interaction, a
+   full-bleed rule — one thing the eye lands on first, everything else in service.
+2. **Type is the identity.** The site should be recognisable from a 200px-wide
+   crop of a heading. Scale, weight, and tight tracking do the work that a logo
+   or illustration would elsewhere.
+3. **Negative space is structural, not leftover.** Big air between sections;
+   generous margins; the content column deliberately narrow against the viewport.
 
-Usage discipline: accent is for meaning (links, the signature mark, the one CTA state), not for decoration. Backgrounds stay in the paper/surface range, with two deliberate, scoped exceptions: the Home hero card (`bg-accent`) and the Footer (`bg-accent-deep`) — both matched to the header's Contact button color for brand continuity, both flip their text to `paper`-based tones for contrast, and neither is a decorative gradient wash across the page. Everywhere else, backgrounds stay in the paper/surface range and accent stays reserved for meaning. Never introduce a hex outside this table in a component.
+If a change makes the site look like a template — a SaaS landing page, a law
+firm, an "AI startup" — it is wrong, even if it's tidy.
 
-### Brand ramp (decorative/logo only — provisional)
-A second, separate palette for the KAP brand mark and gradient moments only. It never substitutes for the functional `accent`/`accent-deep` pair above, and it never sits behind body text.
+## Anti-brief — never
 
-| Token          | Hex        | Role |
-|----------------|------------|------|
-| `brand-indigo` | `#1B2C74`  | gradient stop 0% |
-| `brand-teal`   | `#14827A`  | gradient stop 38% |
-| `brand-green`  | `#2E9E5B`  | gradient stop 68% |
-| `brand-lime`   | `#AEC61C`  | gradient stop 100% |
+Legal-cliché: navy + gold, serif-and-scales, gavels, columns, statue-of-justice,
+stock handshakes, generic smiling-team photos.
+
+Template tells (2024–25): multi-stop **gradient text**; **`01/02` section-index
+kickers** dressed up as "editorial"; cream (`#F4F1EA`) + terracotta +
+high-contrast serif; near-black + acid-green / vermilion; the "AI broadsheet"
+(hairlines everywhere, zero hierarchy); glassmorphism; faux-3D;
+blob / squiggle shapes; molecule / DNA imagery used as *tiled wallpaper behind
+text* (an art-directed single-subject image is fine — see Imagery).
+
+Craft failures: heavy shadows, mixed border weights, orphaned heading lines,
+proportional (non-tabular) figures, custom cursors, scroll-jacking, layout
+shift.
+
+## Palette — named tokens (single source: `tailwind.config.ts`)
+
+Ink + paper base. One accent, drawn from the *granted / registered* idea — a deep
+green-teal that reads as **approved**, not festive. Neutrals carry only a whisper
+of warmth — enough to not read clinical, not enough to read beige / aged.
+
+| Token         | Hex       | Role |
+|---------------|-----------|------|
+| `ink`         | `#14171A` | body text, UI, most headings |
+| `ink-strong`  | `#0A0C0E` | display-scale type only — keeps huge text from reading grey |
+| `ink-soft`    | `#4A5158` | secondary text, captions, lead sentences |
+| `paper`       | `#FCFBFA` | page background — near-white, a whisper warm; not cream, not stark |
+| `surface`     | `#F4F3F1` | section bands — a clean light grey that reads as a *layer*, not aged paper |
+| `accent-wash` | `#ECF2F0` | hover / active washes (folder open body, hovered rows) — the *only* sanctioned faint-accent fill; replaces ad-hoc `bg-accent/5` |
+| `line`        | `#DBD9D3` | every hairline, 1px, one weight sitewide |
+| `accent`      | `#0E5C4A` | links, active state, the mark |
+| `accent-deep` | `#0A3F33` | hover / pressed, the dark footer + hero fills + one dark interior beat per long page |
+
+**Discipline.** Accent means *meaning* (a link, the mark, the active thing, the
+one CTA), never decoration. Backgrounds live in `paper` / `surface` except
+scoped dark moments that flip text to `paper` tones — the **Home hero card**
+(`bg-accent`), the **Footer** (`bg-accent-deep`), and **one dark interior beat**
+on a long page (Home → `WhyKAP` on `bg-accent-deep`). Never a hex outside this
+table in a component; never a gradient wash behind reading text.
+
+### Brand ramp — the mark, and nothing else
+
+A separate decorative palette that exists to seed the eventual logo. It is
+**scoped to two places only**: the registration mark (`Mark tone="gradient"`)
+and the Home hero's ambient edge glow — the teal→green bloom on the card
+(`.hero-glow-bloom`); the running rim shimmer itself (`.hero-glow`) is white,
+not ramp. It is **never** applied to text, never a background, never a section
+fill. (Earlier revisions ran it as gradient-filled heading text sitewide, and
+as a static hairline under the hero tagline — both removed; see Migration
+notes.)
+
+| Token          | Hex       |
+|----------------|-----------|
+| `brand-indigo` | `#1B2C74` |
+| `brand-teal`   | `#14827A` |
+| `brand-green`  | `#2E9E5B` |
+| `brand-lime`   | `#AEC61C` |
 
 ```css
 --brand-gradient: linear-gradient(120deg, #1B2C74 0%, #14827A 38%, #2E9E5B 68%, #AEC61C 100%);
 ```
 
-**Rule:** the gradient appears in four places — the signature mark/logo, one hero accent moment, thin dividers/underlines, and `SectionHeading`'s big name text sitewide (every section's short label — "Why KAP", "About", "Patents", etc. — renders in gradient rather than flat `ink`; see Motion → Heading color below). Still never as a background wash behind body paragraphs or a full section fill — the gradient marks names and statements, not blocks of reading text. Base UI stays on the paper/ink + functional-accent system above; the brand ramp is a decorative accent layer on top of it, not a replacement for it.
+Provisional until synced to the final logo. There are no `--brand-gradient-text*`
+variables any more — delete them if found.
 
-**Three gradient variables — full, text-safe-on-paper, text-safe-on-accent.** Measured WCAG contrast of each stop against `paper` (`FBFAF7`): `brand-indigo` 12.13:1, `brand-teal` 4.47:1, `brand-green` 3.27:1, `brand-lime` **1.85:1** — lime fails even the large-text 3:1 AA floor by a wide margin, and green only just clears it. Against the dark `accent` panel (the Home hero), the roles invert: a dark stop like `brand-indigo` is now the one with poor contrast (dark-on-dark), while `brand-lime` (light-on-dark) reads clearly. So there are three CSS vars, not one:
-- `--brand-gradient` (all 4 stops, unchanged) — for **non-text** uses only: the mark/logo, thin dividers/underlines, the hero accent moment. Contrast rules for text don't apply to these; a divider or a small mark glyph isn't a legibility risk the way a heading is.
-- `--brand-gradient-text: linear-gradient(120deg, #1B2C74 0%, #14827A 45%, #2E9E5B 100%)` — indigo→teal→green, lime dropped — for gradient-filled text sitting on `paper`/`surface` (`SectionHeading`'s name text). Every remaining stop clears 3:1 against `paper` at the large/bold sizes headings render at.
-- `--brand-gradient-text-on-accent: linear-gradient(120deg, #14827A 0%, #2E9E5B 50%, #AEC61C 100%)` — teal→green→lime, **indigo** dropped instead — for gradient-filled text sitting on the dark `accent` panel (the Home hero's H1). `ScrollColorHeading`'s `brandGradientVar` prop selects which of these two text variants a given `tone="brand"` heading uses; default is the paper-safe one.
+## Typography — two voices with clear jobs
 
-Do not reuse the plain 4-stop `--brand-gradient` for any text fill, and do not use the paper-safe text variant against a dark background (or vice versa) — check which background a gradient heading actually sits on before picking the variable.
+Families are fixed. What changed is the **treatment**: bigger, tighter, more
+assertive. The old "tracked, not tight" instruction produced loose, weak
+headings — inverted below.
 
-**Note:** these hex values are provisional — sync to the final logo's exact colors once delivered, and re-run the contrast check above if they change.
+- **`Poppins`** — *the navigation voice.* Header wordmark, nav, buttons,
+  UI labels, section-name headings. Weights 500 / 600 / 700. On display sizes
+  always **700 with tight negative tracking** (`-0.02em` to `-0.03em`), never
+  opened up.
+- **`Spectral`** (400 / 600 / 700) — *the assertion voice.* A screen-first serif
+  (Production Type) with low stroke contrast and a calm, sturdy display cut —
+  confident without drama, and deliberately not the high-contrast display serif
+  that reads as a template tell. Used in exactly two places: the Home hero
+  headline **and** one oversized **Statement** per page (a single claim,
+  `display-2xl`, e.g. *"Fewer filings. Stronger claims."*), both at weight 700.
+  It does not creep into section headings — that's Poppins's job. Two voices,
+  two jobs; the contrast between them *is* the type system.
+  *(Was Fraunces through Phase 5b — retired for Spectral; see Migration notes.)*
+- **`IBM Plex Sans`** (400 / 500 / 600) — all reading copy. Humanist screen
+  sans with drafting heritage. Prose capped ~68ch, `lead` ~46ch.
+- **The eyebrow / label voice is Poppins** — not a separate family. Eyebrows,
+  jurisdiction / docket codes, figure numbers, stat captions, "Scope" /
+  "Process" markers all set `font-display font-medium text-eyebrow uppercase
+  tracking-[0.12em]` (Poppins 500, the `eyebrow` size token carries the
+  tracking). No monospace anywhere on the site — an earlier `IBM Plex Mono`
+  "data voice" was removed (it read as a template tell; see Migration notes).
 
-## Typography — sans-first, with one deliberate serif exception
-The register is *technical precision*, delivered through a bold display sans for statements and a neutral, screen-optimized sans for reading — plus one scoped serif accent on the single most important line on the site. The earlier "grotesque display / humanist serif" pairing (Space Grotesk + Newsreader) was fully retired in favor of an all-sans system; the serif below is a separate, later, narrowly-scoped reintroduction, not a return to that pairing.
+Load via `next/font/google` (self-hosted, static-safe). CSS vars `--font-display`,
+`--font-body`, `--font-hero-serif`; each Tailwind family gets a real fallback
+stack with matched metrics (no layout shift on swap). Three families only —
+Poppins, IBM Plex Sans, Spectral.
 
-- **Display / headings / nav:** a bold, rounded geometric sans — **`Poppins`** (static weights). Weights 500–700 — 500–600 for section headings and nav links, 700 (`tracking-tighter`) for anywhere the extra weight carries a statement. This is also the font used throughout the header (logo wordmark, nav links, Services dropdown, mobile sheet) — the header doesn't get its own typeface, it's the same `font-display` used everywhere else.
-- **Home hero headline — the one serif exception:** **`Fraunces`** (`font-serif`, weight 700), used *only* for the Home hero's H1 (`site.tagline`). Chosen over a heavier/more traditional serif specifically to avoid the "navy + gold law-firm serif" cliché the anti-brief warns against. Loaded as the full variable font (not a pinned static weight) with its `opsz`/`SOFT`/`WONK` axes included, then dialed via inline `font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0` for a sharper, higher-contrast display cut rather than Fraunces's softer default text setting — set on the component (`ScrollColorHeading`'s `style` prop), not globally, so it stays scoped to this one heading. Every other heading on the site, including other pages' `h1`s (Services hub, service pages, Contact), stays on `font-display`. If this ever needs to spread further, extend deliberately — don't let "the hero font" quietly become "the heading font."
-- **Body:** **`Inter`** — chosen specifically because it's built for UI/screen reading at small sizes, unlike Poppins's geometric letterforms which get harder to scan at paragraph length. Regular for body, medium for emphasis. Used for all paragraph copy, descriptions, and summaries site-wide. *(Previously Newsreader, a humanist serif — replaced because the serif read poorly against the rest of the redesign's all-sans direction; no component references "Newsreader" by name, everything uses the `font-body` variable, so this was a layout.tsx-only change.)*
-- **Utility / data / eyebrows:** a mono for labels, jurisdictions, small caps details — **`IBM Plex Mono`** or `Space Mono`, used sparingly at small sizes, letter-spaced, uppercase for eyebrows.
+**Type scale** (rem, mobile → desktop clamp):
 
-Load via `next/font/google` (self-hosted at build, static-safe). Expose as CSS vars: `--font-display`, `--font-body`, `--font-mono`, `--font-hero-serif`; map in Tailwind `fontFamily` (the serif reuses Tailwind's own `serif` key rather than a custom one). Poppins ships only in static weights (no variable axis) — load exactly the weights used (`500`/`600`/`700`), not the full family, to keep the font payload small. Fraunces is the one exception: loaded as a full variable font (with `axes: ["opsz", "SOFT", "WONK"]`) specifically so its optical-size/softness/wonkiness can be tuned via `font-variation-settings`, per above.
+| Token         | Clamp            | Line-height | Tracking | Use |
+|---------------|------------------|-------------|----------|-----|
+| `display-2xl` | `3 → 6`          | `0.98`      | `-0.03em`| `SectionHeading` h1 (interior page titles) |
+| `display-hero`| `1.75 → 5.5`     | `1.0`       | `-0.03em`| Home hero H1 only — steeper low end so `brandLine` keeps its two authored lines on mobile |
+| `display-xl`  | `2.5 → 4.25`     | `1.0`       | `-0.025em`| section names, the figures |
+| `display-statement` | `2 → 4.25` | `1.05`     | `-0.02em`| Statement block only — steep ramp (~68px at 1440); short claim holds one centred line on the widened measure, longer sentences take an authored `\n` |
+| `display-l`   | `2 → 3`          | `1.05`      | `-0.02em`| sub-headings, service names |
+| `lead`        | `1.125 → 1.375`  | `1.4`       | `0`      | supporting sentence under a heading |
+| `h3`          | `1.25 → 1.5`     | `1.15`      | `-0.01em`| deliver-item names, column heads |
+| `body`        | `1.0625`         | `1.6`       | `0`      | prose |
+| `small`       | `0.9375`         | `1.55`     | `0`      | captions, tab labels |
+| `eyebrow`     | `0.75`           | `1`         | `0.12em` | Poppins 500 labels (uppercase) |
 
-**Type scale** (rem, mobile → desktop clamps): display-xl `2.5→4.25`, display-l `2→3`, `lead` `1.125→1.25`, h2 `1.5→2`, h3 `1.25→1.5`, body `1.0625`, small `0.9375`, mono-eyebrow `0.75` (tracked `0.12em`, uppercase). Line-height: headings 1.05–1.15, `lead` 1.4, body 1.6.
+Every heading gets `text-wrap: balance` (no orphan lines). Every figure, date,
+and number gets `font-variant-numeric: tabular-nums`.
 
-### Site-wide type hierarchy inversion
-Previous drafts led with a full descriptive sentence as the biggest thing on the page, with the section's short recognizable label ("Why KAP", "About", "Contact") reduced to a small mono eyebrow above it. Inverted: **that short label *is* the largest element in its section** — set in `display-xl`/`display-l`, `font-display` 600–700, with added `letter-spacing` (tracked, not tight) so a short word still commands the space, paired inline with the mark (not a separate tiny kicker row above it — the label itself is both the eyebrow-content and the display element now). The **descriptive sentence drops to a supporting `lead`** (`1.125–1.25rem`, `font-body`, `ink-soft`) directly beneath it — still readable, no longer competing for size.
+### Section header
 
-Stack, top to bottom: mark + name (big, tracked) → thin rule → lead sentence (small, supporting, optional).
+Just the name and (optionally) a lead sentence. **Nothing above the name, no
+rule under it, no mark, no number.** `SectionHeading` is `heading` + `lead`.
 
-Any heading previously split into "tiny mono eyebrow" + "full descriptive sentence as the big heading" inverts: the eyebrow's short label becomes the (single) big `heading`, the old sentence becomes the optional `lead`. This applies to `SectionHeading` (`components/ui/SectionHeading.tsx`) sitewide — it takes `heading`/`lead` props only, no separate `eyebrow` prop — and to the hand-rolled Home/About heroes (point below).
+- **Section name** is the largest thing in the section — `display-xl` (h2) /
+  `display-2xl` (h1) / `display-l` (h3), Poppins 700, tight. A short word
+  ("Patents", "Approach") set this big *is* the design.
+- Lead is `text-lead text-ink-soft`, capped ~46ch, directly beneath.
+- Content follows as its own block (full width — not forced into a column).
+- No "01/02" section numbers — tried and removed; they read as templated even
+  when framed as "wayfinding". Ordered *process* (patent Process steps) still
+  numbers, because there order is real information.
+- The old `mark → big name → rule → lead` centre stack is retired.
 
-## Signature element — the "registration mark"
-The one thing this site is remembered by. IP work culminates in a *grant/registration* — the moment a right is recognized. Render that as a **precise geometric glyph**: a fine-line square bracket/corner-crop framing a small filled check or seal notch. Think a registration corner-mark on a drawing sheet, not a badge.
+## Signature elements
 
-**Fill — brand gradient exception.** The mark is the one shape allowed to carry `--brand-gradient` (see palette above) instead of flat `accent` — it's the seed the eventual logo will be built from. Every other use of the mark (eyebrow markers, ambient background texture) stays on the quiet `accent`/`line`/`surface` tones below; only the primary logo-lockup instance takes the gradient fill. Provisional until synced to the final logo.
+**1. The registration mark.** IP work culminates in a *grant* — the moment a
+right is recognised. A precise geometric glyph: a fine-line corner-crop framing a
+small check / seal-notch. A drawing-sheet registration corner, not a badge.
+`components/ui/Mark.tsx`, inline SVG, single source, never rasterised.
+- Logo lockup beside "KAP IP" (header) — gradient-filled (the one text-adjacent
+  gradient use, and it's a glyph, not type).
+- One faint instance behind the footer — the only ambient use.
+- **Not** in section headers (it read as debris at small size next to giant
+  type) and **not** as a watermark behind content.
 
-Uses (sparingly — this is the *one* accessory we keep):
-- As the logo lockup mark beside "KAP IP" — gradient-filled (see above).
-- As the eyebrow marker before section headings on service pages (replaces bullets/numbers) — flat `accent`, not the gradient.
-- One large, faint version as ambient texture behind the Home hero or footer — low opacity, `line`/`surface` tones, never loud, never gradient.
+No underline / rule under section names, and no number above them — the tight
+display type carries the header on its own. (Both an animated "ruled underline"
+and a mono `01/02` index were tried and cut — clutter, and the numbers read as
+templated.)
 
-Draw it as an inline SVG component `components/ui/Mark.tsx` (typed `size`, `tone` props), single source. Never rasterize it; never duplicate the paths.
+**2. Directional CTA glyph.** `Button icon` appends a diagonal arrow in a 4px
+outline for the one or two consequential actions per page (header Contact, hero
+CTA, media card). Not on every button.
 
-Secondary structural device: **hairline rules** (`line`, 1px) that behave like document margins — full-bleed section dividers, and a thin rule under eyebrows. Precision through alignment, not shadows. Zero-to-small border radius (`4px` max on cards, badges, and buttons); the mark and rules carry the identity, corners stay quiet — no pill shapes, no fully-rounded chips.
-
-**Directional CTA icon:** `Button` (`components/ui/Button.tsx`) takes an optional `icon` prop that appends a small trailing glyph (a diagonal arrow in a `rounded-card` outline, `currentColor`) for CTAs that lead somewhere consequential — the header's elevated Contact button, the Home hero's primary CTA. Not applied to every button; it marks the one or two most important actions per page.
+Radius: `4px` max on interactive elements; the hero card is the one `28px`
+exception. No pills, no fully-round chips. Corners stay quiet — the mark carries
+the identity.
 
 ## Layout
-- **Container:** max-width ~`1120px`, generous gutters (mobile 20px, desktop 40px). `Container` component enforces it — no ad-hoc widths.
-- **Whitespace is the material.** Big vertical rhythm between sections (mobile `4rem`, desktop `7–8rem`). Let content breathe; density is the enemy of premium here.
-- **Grid:** service hub (`/services`, the directory page) = 2-up (mobile 1-up) plain card grid — stays a scannable directory, no node/motion treatment there (PRD: "a directory, not an essay").
-- **Home services node explorer:** the Home page's "What we do" section (`components/sections/ServicesOverview.tsx`) replaces the plain card grid with a **4-node square layout** on `md+` screens — mobile/tablet falls back to the existing stacked `ServiceCard` grid, since a corner-node layout doesn't survive small screens. Four nodes sit at the corners of a square; one is **active** (much larger — up to 18rem (`lg:h-72`/`lg:w-72`) vs. the quiet nodes' 6rem, with a soft `accent`-tinted glow (`shadow-accent/60`, wide/soft blur, no hard edge) around its border — shows the service's `name` + `summary` as subtext + an "Explore" button to `/services/[slug]`), the other three are **quiet** (small — name only, no subtext or button, no glow). Patents is the default active node on load (`services[0]` by `order`). Hovering or focusing any quiet node instantly swaps it to active. When nothing is hovered/focused, the active node **auto-advances** through all four on a timer (~4–5s), looping. Auto-advance pauses for as long as any node is hovered/focused and resumes from where it left off once the pointer/focus leaves — gate the interval on `:hover`/`:focus-within` in code, never announce it with on-page copy ("hover to pause" etc.) — the behavior should be self-evident, not explained. Under `prefers-reduced-motion`, auto-advance is disabled entirely: Patents stays active until a node is explicitly hovered/focused, so nothing moves on its own for a user who hasn't opted into motion — this doubles as the accessibility fallback (WCAG 2.2.2 Pause/Stop/Hide) without a visible pause button. Sub-services (when a service has more than one) render as a **sticky sidebar + scrollspy explorer** — `components/ui/ScrollspyExplorer.tsx`, a generic primitive (not service-specific; reusable for any set of named sections), wrapped by `components/sections/SubServiceExplorer.tsx` for this domain. All sub-services' content sits stacked in one scrollable column; a narrow nav (`border-l-2` accent tick on the active item) stays `sticky` alongside it. The two are wired both ways: scrolling the content updates which nav item is highlighted (`IntersectionObserver`, watching a thin band near the top of the viewport), and clicking a nav item jumps to that section — deliberately an **instant jump** (`scrollIntoView({ behavior: "auto" })`), not a smooth animated scroll, so reaching the last item never means visually gliding past everything in between. Each section shows its eyebrow+mark+name, plain intro, "what we deliver" items (each its own name + full paragraph — `DeliverItem`, not a plain bullet), optional Scope bullets, and Process (numbered, only if present). On mobile the nav becomes a sticky horizontally-scrollable row above the content instead of a side column. Comfortable measure (~68ch max) still applies to prose within each section.
-- **Header:** slim, `paper` with hairline bottom rule on scroll; mark + wordmark left, plain-text nav (Home/About/Services) right, then the Contact item elevated out of the plain nav into a filled `accent` `Button` with the directional icon — one clearly-weighted action, not four equal links. Mobile: mark + wordmark, hamburger; sheet menu groups Services and repeats the same elevated Contact button at the bottom.
-- **Home hero:** a rounded card (`rounded-hero`, 28px — the one deliberate exception to the 4px cap), flush against the header (no gap — the card touches the header's bottom edge directly) with a small fixed side gutter (not the shared `Container`, which would cap it at 1120px and leave large empty margins on wide screens), `bg-accent`. The hero photo is confined to the right ~45–55% only (hidden on mobile), never full-bleed — a dark-teal tint plus a left-edge gradient (solid `accent` fading to transparent) seats it into the panel so there's no hard seam between photo and color. Content sits on the left in `paper` tones, using the site-wide **big-name / small-lead** structure above: headline (`site.brandLine`, the display name, bold 700, `letter-spacing` opened up, tighter `line-height` than the default display clamp so a short tracked word doesn't read loose, the one place display weight goes there) → smaller supporting `lead` sentence (`site.tagline`) → short **gradient** rule (`--brand-gradient`, the one hero accent moment) → CTA row, primary CTA inverted to a `paper` button so it doesn't disappear into the matching-color panel. More vertical breathing room between headline and lead than the previous cramped draft ("clumsy" heading — fixed by the tracking/line-height/spacing changes above, not by a different font). No carousel, no floating/overlapping CTA card poking past the card's edge, no rounded "browser frame" wrapping the whole page — those rely on shadow/large-radius devices this system doesn't use beyond this one card.
-- **About hero:** same big-name/small-lead structure as the Home hero, on the plain `paper` background (not the accent card treatment) — uses `SectionHeading` directly: mark + big display name ("The Firm" — not the full `about.lead` sentence) → `about.lead` demoted to the smaller supporting `lead` line beneath it. No accent card, no photo panel — this hero stays quiet, consistent with the rest of the About page.
-- **Footer:** the one place the site goes dark — `bg-accent-deep`, all text flipped to `paper`-based tones (`paper` for headings/links, `paper/50–80` for secondary text, matching the same override pattern used on the Hero's accent panel). Three columns: brand (mark + name + tagline + social icons — LinkedIn/Twitter/WhatsApp, `components/ui/icons.tsx`, DUMMY profile URLs from `site.socials` until real ones exist), contact (each item gets a `mono-eyebrow` label — Phone/WhatsApp/Email/Address/Hours — over its value, not a bare list), nav repeat. Below that, a quiet bottom bar (`border-t border-paper/15`) with the copyright line and a "Developed by {site.developer}" credit. Faint ambient mark still sits bottom-right, now rendering light-on-dark instead of light-on-paper.
 
-### ASCII wireframe — service page (the core template)
+- **Container** — `max-w-container` (~1120px), gutters 20px mobile / 40px
+  desktop. `Container` enforces it; no ad-hoc widths.
+- **Prose is deliberately narrow** — capped ~68ch, never full container width.
+  Structured blocks (media grid, figures grid, def-list) use the full width;
+  reading copy does not.
+- **Vertical rhythm** — `6rem` mobile / `9–10rem` desktop between sections. More
+  air than feels comfortable at first; density is the enemy.
+- **One full-bleed moment per page** — either the Statement block on a `surface`
+  band that bleeds past the container, or a single edge-to-edge hairline. Used
+  once, deliberately.
+- **Section rhythm** — sections default to `paper` + `border-b border-line`. A
+  long page gets **two tonal breaks, non-adjacent**: one `bg-surface` beat and
+  one dark `bg-accent-deep` beat (text flipped to `paper` tones). The fill is
+  the divider — drop the `border-b` on the section above a tonal change and on
+  the tinted/dark section itself; keep hairlines only between two `paper`
+  sections. Home → `Stats` (`surface`), `WhyKAP` (`accent-deep`). About →
+  `AboutApproach` (`surface`). Hero (`bg-accent`) and footer (`bg-accent-deep`)
+  are the framing fills. Same-tone beats never sit adjacent.
+
+### Statement block (new)
+
+Once per page. A single sentence, `display-statement` Spectral, `ink-strong`,
+**centred**, generous air around it (`py-16 md:py-24` — a distinct beat, not the
+oversized well it used to be), optionally on the full-bleed `surface` band. It is
+the editorial pull-quote — it interrupts the scroll and states the firm's
+position in its own voice. Home: a claim about the work. About: the mission line.
+Service pages: the `precise` one-liner.
+
+A two-part claim may take `dimLead` (Home: "Fewer filings. Stronger claims.") —
+the first sentence drops to `ink-soft` so the payoff sentence carries the weight.
+Stays on **one line** (word split, no `\n`); one tonal step only, the rest stays
+`ink-strong`.
+
+Centre-aligned is the one deliberate exception to the site's left-set headings —
+it reads as a pull-quote, not a section head. The measure is widened to
+`max-w-[82rem]` (past the 1120 container) and the type ramp is steep (~68px at
+1440) so a **short** claim ("Fewer filings. Stronger claims.") holds one line on
+desktop at a real display size. A longer sentence carries an **authored `\n`**
+(`Statement` detects it and switches `RevealText` to `split="line"`), so it
+clip-rises as two balanced lines rather than wrapping unevenly. Below ~900px
+viewport, and on mobile, a short claim may take two lines — acceptable.
+
+### Home hero — type-first
+
+`bg-accent` card, `rounded-hero` (28px), flush under the header, small fixed side
+gutter (not `Container`). **Type dominates:** `site.brandLine` set in Spectral at
+`display-hero`, `paper`, tight, as **two authored lines** (split on `\n` in the
+data) — and never more than two: the column width is tuned to hold them, don't
+narrow it. The headline column runs near-full width (`md:w-[94%] lg:w-[90%]`)
+and is allowed to overlap the left edge of the photo. The right side carries a
+lightly-tinted (`bg-accent-deep/30`), **discipline-neutral** photo in the right
+~46% with a left-edge scrim (`w-[52%]`, `from-accent via-accent/70`) so the
+overlap zone still reads as panel — never a full-bleed photo, and never a
+life-sciences motif (DNA / molecule / protein):
+the hero is the one spot the whole site would read as bio-only. Subject is
+abstract structure or a precision object — see `docs/IMAGE-PROMPTS.md § 1`.
+`object-position` is biased right (`object-[58%_50%]`) so the denser part of the
+image sits inside the visible panel rather than cropped off.
+
+Below the headline, one moderate gap (`mt-10 lg:mt-14`), then the `lead`
+sentence (`site.tagline`) + CTA as **one tight left-set unit** (`gap-7`,
+`max-w-[34rem]` holds the tagline to ~2 lines — widen the measure, never edit
+the shared string). Primary CTA inverted to a `paper` button. The group stays
+together on purpose: a type-first hero is legitimately left-weighted, and
+scattering the elements to force symmetry just reads as unorganised. The
+counterweight is the imagery — hence the light `/30` tint (see above), not a
+flung CTA. No hairline rule, no carousel, no floating card, no browser-frame
+wrapper.
+
+The H1's two authored lines **clip-rise** on load (and on client-nav remount) —
+CSS-only (`.hero-headline-line`, `@keyframes hero-line-rise`), a short base
+delay so the PageIntro overlay clears first, static under
+`prefers-reduced-motion`. The type is in the DOM and painted throughout; the
+animation only transforms it, so the hero is still a static server component
+that paints instantly. This is the hero's share of the sitewide text reveal
+(§ Motion) — the one entrance it's allowed.
+
+One subordinate accent, under the type and never competing with it: an
+**ambient edge glow** in two parts (both in `globals.css`), reduced-motion-safe.
+
+- `.hero-glow` — the **running shimmer**. A rim masked to a ~4px border ring: a
+  constant near-`paper` hairline outline plus one bright arc with a **pure-white
+  hotspot core** and only thin cool/warm fringes (a light running the edge, not
+  a chromatic sweep — the earlier pale brand-ramp version read as invisible on
+  the card). Rounds the perimeter on a ~7s loop (a rotating `conic-gradient` via
+  `@property --hero-glow-angle`); a `-138deg` offset parks the arc at the
+  top-left corner at `t=0` so it's in view on first paint. The animated band is
+  a thin masked ring, so per-frame repaint is negligible; under
+  `prefers-reduced-motion` the arc is dropped and only the hairline stays.
+- `.hero-glow-bloom` — a **static** soft `box-shadow` on the card in teal→green
+  (hues near the card's own, so it reads as the card glowing, not a foreign
+  colour), blooming a few px onto the `paper` page. Static → zero per-frame
+  cost; it carries the "glow" while the rim carries the motion. It and the rim
+  together are the hero's one brand-ramp moment (see § Brand ramp).
+
+### Section blocks — ruled, not carded
+
+Content composes as `SectionHeading` + a hairline-ruled block. Never a grid of
+bordered cards (cards read as templated SaaS).
+
+- **By the numbers** (`Stats.tsx`) — a hairline grid of figures: `border` on the
+  wrapper, `border-b border-r` per cell, no per-tile fill. Figure in
+  `display-xl` `accent`, tabular; caption in the `text-eyebrow` label style. Each
+  figure **counts up once** on scroll-into-view (`useCountUp`; reduced motion →
+  final value immediately). Sits directly under the hero on Home — proof first —
+  on a `bg-surface` fill (the page's `surface` beat).
+- **Why KAP** (`WhyKAP.tsx`) — the Home page's one dark beat: a nocturne panel
+  (`bg-accent-deep`) between the dark hero card and the dark footer. Two columns
+  on `md+`: the three points as a ruled list (term `display-l` Poppins 700,
+  description `body` below it) on the left, one tall `rounded-media` supporting
+  image (3:4, nocturne) on the right. Type and rules flip to `paper` tones
+  (`SectionHeading tone="onDark"`, rules `border-paper/15`). Cuts the text
+  density and gives the section a visual anchor. Image hidden below `md`.
+- **Expertise** (`AboutExpertise.tsx`) — practice areas as two ruled indexes,
+  asymmetric split, each item a hairline-divided row. No chips. (`Badge` removed.)
+- **Talk to us** (`TalkToUs.tsx`) — Home CTA band: a single `rounded-media` image
+  panel, kept short (`min-h` ~260/300px) — heading + one line of copy on the
+  **left**, a lone inverted `bg-paper` CTA on the **right**, vertically centred
+  over a left-anchored `ink-strong` scrim. Stacks on mobile. The on-image idiom
+  of `MediaCard` + the hero CTA, not the shared `CTA`'s ruled row. One primary
+  CTA only, no overlapping card, no checklist.
+
+### Home services media grid
+
+The "What we do" section is a **2×2 grid of image cards** (`MediaCard`), one per
+service. Each card: a full-bleed laboratory-nocturne image, `rounded-media`
+(14px — a deliberate exception to the 4px cap, between it and the 28px hero), the
+service **name** in a solid `ink-strong` tag bottom-left, and a filled circular
+**arrow button** bottom-right (`ink-strong` → `accent` on hover). The
+`summary` is hidden by default and **fades up on hover / focus** over a
+deepening bottom scrim — name only at rest, name + line on interaction.
+
+- **The whole card is the link** to `/services/[slug]`; the arrow is a visual
+  affordance, not a separate target.
+- No auto-advance, no carousel — all four are visible at once. The image lifts
+  ~4% on hover (`motion-reduce` disables it); the scrim + subtitle reveal is a
+  300ms fade, hover-safe under reduced motion.
+- 1-up below `sm`, 2-up above.
+- Radius exceptions this introduces: `rounded-media` on the card, and
+  `rounded-full` on the name tag + arrow button (an icon button and an
+  image-overlay tag — the "no pills" rule holds for standalone UI chips, not
+  these two on-image elements).
+- `ServiceCard` (the ruled text card) survives only on the `/services` hub — a
+  plain 2-up directory, "a directory, not an essay".
+- Images: `public/images/services/<slug>.<ext>` — dark placeholders now
+  (`npm run placeholders`), real set per `docs/IMAGE-PROMPTS.md § P2`.
+
+### Sub-service explorer
+
+Services with >1 sub-service use a sticky sidebar + scrollspy
+(`ScrollspyExplorer.tsx`, generic; wrapped by `SubServiceExplorer.tsx`). All
+sub-services stacked in one scroll column; a sticky nav (`border-l-2` accent
+tick on the active item) alongside. Scrolling updates the tick
+(`IntersectionObserver`); clicking a nav item is an **instant jump**
+(`scrollIntoView({ behavior: "auto" })`), never smooth-scrolled. Each section:
+eyebrow + mark + name, plain intro, "what we deliver" items (name + full
+paragraph each), optional Scope, Process (numbered, only if present). Mobile: nav
+becomes a sticky horizontal-scroll row above the content.
+
+### Header
+
+Slim, `paper`, hairline bottom rule on scroll. Mark + wordmark left; plain-text
+nav (Home / About / Services) right; Contact lifted out into a filled `accent`
+`Button` with the directional glyph — one weighted action, not four equal links.
+Mobile: mark + wordmark + hamburger; sheet groups Services and repeats the
+Contact button at the bottom.
+
+### Footer
+
+The one dark surface — `bg-accent-deep`, text flipped to `paper` tones. Three
+columns: brand (mark + name + tagline + LinkedIn/Twitter/WhatsApp icons),
+contact (each item an eyebrow label over its value), nav repeat. Quiet
+bottom bar (`border-t border-paper/15`) with copyright + "Developed by
+{site.developer}". The one faint ambient mark sits bottom-right, light-on-dark.
+
+### ASCII wireframe — service page (core template)
+
 ```
-┌────────────────────────────────────────────┐
-│ MARK  KAP IP                     nav  ☰      │  ← slim header, hairline on scroll
-├────────────────────────────────────────────┤
-│ ▪ PATENTS                                    │  ← mark + big display name
-│ Global patent protection, drafted precisely  │  ← lead, smaller
-│ [plainIntro — humanist serif, ~68ch]         │
-│ • overview bullet   • overview bullet        │
-├────────────────────────────────────────────┤
-│ Search & Analytics │ ▪ SEARCH & ANALYTICS    │  ← ScrollspyExplorer: nav is
-│▎Drafting  (sticky) │ [plainIntro]            │    `sticky`, stays put while
-│ Global Filing …    │                         │    the right column scrolls
-│ Patent Intelligence│ Patentability Search     │    through ALL sub-services'
-│ Exam Training      │ [full paragraph]         │    content stacked in order.
-│ AI Document Review │                          │    Scrolling highlights the
-│ Opposition         │ Freedom to Operate       │    nav item in view (▎ = tick);
-│                     │ [full paragraph]         │    clicking a nav item jumps
-│                     │                          │    straight there (instant,
-│                     │ ▪ DRAFTING (next, on     │    not smooth-scrolled) —
-│                     │   scroll) …              │    reaching the last item
-│                     │ ── Process (if ordered) ─│    never means scrolling past
-│                     │   01 …  02 …  03 …        │    everything above it.
-├────────────────────────────────────────────┤
-│ [ CTA band: Talk to us → Contact ]           │
-├────────────────────────────────────────────┤
-│ footer: contact · nav · faint mark           │
-└────────────────────────────────────────────┘
+┌──────────────────────────────────────────────┐
+│ ◹ KAP IP                    Home About  ▸ [Contact] │  slim header
+├──────────────────────────────────────────────┤
+│ PATENTS                                       │  name huge (display-2xl)
+│ Global patent protection, drafted precisely.  │  lead
+│ [ plainIntro, ~68ch ]                          │
+├──────────────────────────────────────────────┤
+│ Fewer filings.                                │  ← Statement block
+│ Stronger claims.                              │     display-2xl Spectral
+├──────────────────────────────────────────────┤
+│ Search & Analytics │ SEARCH & ANALYTICS        │  scrollspy: sticky nav L,
+│▎Drafting           │ [ plainIntro ]            │  content scrolls through
+│ Global Filing …    │ Patentability Search      │  all sub-services in order
+│ …                  │ [ full paragraph ]        │
+├──────────────────────────────────────────────┤
+│ [ CTA band → Contact ]                         │
+├──────────────────────────────────────────────┤
+│ footer (dark): contact · nav · faint mark      │
+└──────────────────────────────────────────────┘
 ```
-Services with zero sub-services (Trademarks, Copyrights, Designs today) skip the explorer entirely — the page is just the service intro + CTA.
 
-## Imagery
-**Direction:** life-sciences-forward motifs (molecules, DNA strands, protein structures, periodic-table fragments) as the dominant visual language — this reflects KAP's primary practice. But the site must never read as life-sciences-only: the domains grid (all 10 fields from `about.ts`, including electrical, mechanical, and AI) sits prominently near the hero so breadth is established immediately, and service pages (Trademarks, Copyrights, Designs, and the non-life-sciences corners of Patents) use neutral or mixed motifs rather than forcing a molecule into every panel. Life sciences is the primary visual language, not the only one.
+Services with no sub-services skip the scrollspy — intro + Statement + CTA.
 
-**Format target:** lightweight SVG/vector for iconographic and motif work (scales cleanly, tiny payload); well-compressed WebP/AVIF for anything photographic. Mobile-first — no asset justifies a perf hit on a slow connection.
+## Imagery — laboratory nocturne
 
-**Current state:** real imagery arrives later (client-provided PNGs). Until then, dummy placeholder PNGs stand in — generated via `scripts/placeholder-team-photos.mjs` (`npm run placeholder-team`) for people, `scripts/placeholder-images.mjs` (`npm run placeholders`) for service motifs. Same rule as the rest of the data layer: placeholders keep the real shape (file paths, aspect ratios) so the swap to real assets is mechanical.
+**Direction.** One art-directed set, never stock science or wallpaper. One
+subject per image, photographed in near-darkness under a single deep green-teal
+light, strictly monochromatic (`ink` / `accent` / dim silver), vast negative
+space. A science-journal cover, not a clip-art molecule. Full per-slot prompts
+live in **`docs/IMAGE-PROMPTS.md`** — that file is the source of truth for what
+gets generated.
 
-## Motion (lib/motion.ts, plus one dedicated scroll-linked primitive)
-Restrained — but perceptible. The site should feel *composed*, not animated, and not so quick it reads as a flicker.
-- **Heading color wipe:** every heading (`components/ui/ScrollColorHeading.tsx`) starts in a muted tone (`ink-soft` on paper/surface backgrounds, `paper/40` on the Home hero's accent panel) and sweeps left-to-right to its full color (`ink` / `paper`) as it's scrolled through the viewport — a `background-clip: text` gradient whose stop position is driven continuously by scroll offset (`framer-motion`'s `useScroll` + `useTransform` + `useMotionTemplate`, not `getSectionReveal`), so it tracks scrolling back up too, not just a one-shot reveal. Wired into `SectionHeading` (covering most headings sitewide, including sub-service names in the explorer — these are real big headings now, not small mono labels) plus the hand-rolled ones (Home hero, credibility/expertise h3s, sub-service deliver-item names). Never re-implemented per call site. Small mono-eyebrow-styled labels that exist purely for outline purposes ("What we deliver"/"Scope"/"Process" labels) stay excluded — visually they're labels, not headings. Skipped entirely under `prefers-reduced-motion` (renders the final color statically).
-- Section reveal on scroll: opacity 0→1 + `y` 24px→0, `600ms`, ease-out, `once: true`, triggers ~40px before fully in view. One variant (`getSectionReveal`), reused everywhere — no section is left un-animated, including hero-style top sections.
-- Grids of cards/columns/steps (service cards, credibility columns, process steps, values) nest a `getStaggerContainer` wrapper so items enter in sequence (`staggerChildren: 0.12s`) rather than as one flat block.
-- Header hairline + subtle bg on scroll past hero.
-- Hover: links and cards get a `line`→`accent` rule/underline transition and a 1–2px lift at most — no scale bounce, no shadow bloom.
-- **Home hero wipe reveal:** the hero uses a different entrance than every other section — a left-to-right "curtain" reveal (`getWipeReveal`, `clip-path: inset()` animated from fully-clipped to fully-shown) instead of the usual up-fade, since the request was specifically for the green panel and its text to sweep in from the left rather than rise from below. The whole card (panel + photo) wipes in first (~0.5s), then the headline, intro, rule, and CTA row sweep in after it in their own staggered sequence (delays 0.5s→0.9s) — same staggering as before, just swept instead of faded. This is the one section that doesn't use `getSectionReveal`; everywhere else keeps the fade-up. *(There was previously a mark-draw-on-load moment in a hero badge; both the badge and the draw animation were removed — `getMarkDraw` no longer exists in `lib/motion.ts`.)*
-- `prefers-reduced-motion`: all reveals render instantly at their final state, no stagger delay. Read via `useSafeReducedMotion` (`lib/motion.ts`) — built on `useSyncExternalStore`, not Framer Motion's own `useReducedMotion`, to avoid a hydration mismatch between server and a reduced-motion client.
+**Discipline-neutral by default.** KAP's primary practice is life sciences, but
+the site must not *look* life-sciences-only (client feedback on the old DNA
+hero). So the hero and everything above the fold use neutral subjects — abstract
+structure, precision instruments, pure form. Molecule / DNA / cell motifs appear
+in exactly **one** place: the `life-sciences` tile of the domain strip, where
+they name a field on purpose. Non-life-sciences service pages use neutral /
+mechanical motifs.
 
-### Visual/interactive shift — less text, more structured blocks
-Direction going forward: reduce copy density in favor of structured visual blocks (stat tiles, domain grid, team card) and a small, restrained set of interactions layered on top of the existing motion primitives above — not a departure from them.
-- **Hero motif assembles on load:** the life-sciences motif (molecule/DNA form) in the hero builds itself in on first paint — a bounded, one-shot entrance, not a looping animation.
-- **Stat count-up on scroll-into-view:** the numbers/stats strip (`data/stats.ts`) counts up from 0 to its value once, triggered the same way as `getSectionReveal` (`viewport={{ once: true }}`), not on every scroll pass.
-- **Hover states on cards/domains:** the existing `line`→`accent` rule/underline + 1–2px lift pattern (see Hover, above) extends to the stat tiles, domain-grid items, and the team card — no new hover language, same restrained one.
-- All of the above are reduced-motion-safe via the same `useSafeReducedMotion` gate — count-ups render at their final value instantly, the hero motif renders fully assembled, hover lift/underline still work (hover isn't motion-sickness-triggering, stays on).
+**Breadth is shown, not implied.** With the hero neutral, the uniform **domain
+strip** (life-sciences · chemistry · electrical · mechanical · AI, same nocturne
+photo treatment) near the top of the site is what carries "we work across
+fields" — it's in scope, not optional. The ruled domains index backs it up in
+text.
 
-**Guardrails:** no heavy video backgrounds, no scroll-jacking (native scroll stays native), all imagery lazy-loaded below the fold, perf budget from the Quality floor below is non-negotiable. Interactions exist to serve clarity — draw the eye to what matters — never spectacle for its own sake.
+There is **one image treatment** — the nocturne photo. (An earlier `paper`-side
+line-art treatment is retired.)
 
-**Auto-advancing content is allowed, narrowly.** The Home services node explorer (above) is the one place content changes on its own without the user acting first. It's permitted specifically because it ships with real pause control — hover/focus pauses it, `prefers-reduced-motion` stops it outright — not because the general anti-carousel stance (Home hero: "no carousel") has softened. Don't reach for auto-advance elsewhere without the same pause/stop guarantees, and never label the pause behavior in on-page copy — it should just work when the user's attention lands on it.
+**Photography of people** (when real): editorial, desaturated near-monochrome
+with a faint green-teal cast, plain dark background, single-source light — never
+handshakes, never smiling-team stock, never a white studio sweep.
 
-### Heading color
-`SectionHeading`'s big name text renders in `--brand-gradient-text` (`ScrollColorHeading`'s `tone="brand"`) instead of flat `ink` — see Palette → Three gradient variables above for the contrast reasoning (lime dropped; the 3 remaining stops clear AA at heading sizes). This replaces the old scroll-linked color-wipe for these headings specifically: a static gradient fill reads more like a signature than an animated one would, and it avoids re-deriving a moving 2-color wipe into a 3-stop gradient.
+**Format** — inline SVG for the mark only (tiny, scales clean); compressed
+WebP/AVIF for photos; every image space reserved to prevent shift; below-fold
+lazy. Mobile-first — no asset justifies a perf hit on a slow network.
 
-The **Home hero's H1** also uses `tone="brand"` now (the hero being the one designated "hero accent moment" the brand ramp is scoped to) — but with `brandGradientVar="--brand-gradient-text-on-accent"`, the dark-background variant, since it sits on `bg-accent` rather than `paper`. The wipe-on-scroll behavior (`tone="ink"`/`"paper"`) stays exactly as before for every other heading that isn't going through `SectionHeading` and isn't the hero H1 (deliver-item names, credibility/expertise h3s) — those are secondary text, not a section's name or the one hero statement, and stay quiet.
+**Current state** — placeholder PNGs stand in (`npm run placeholders`,
+`npm run placeholder-team`), keeping real file paths / aspect ratios so the swap
+is mechanical.
 
-## Quality floor (build to it, don't announce it)
-Responsive to 360px. Visible keyboard focus (accent ring). Reduced motion respected. Real contrast (ink on paper passes AA). Images sized and lazy. Tap targets ≥44px. Mono eyebrows are decorative-but-labelled — real heading text stays in the heading element.
+## Motion (`lib/motion.ts`)
+
+Composed, not animated. One choreographed moment per page; everything else is a
+whisper. All of it gated by `useSafeReducedMotion` (`useSyncExternalStore`-based,
+no hydration mismatch).
+
+- **Section reveal** — `opacity 0→1`, `y 24px→0`, `0.55s`, `easeOut`, `once`,
+  fires when the element is ~12% into the viewport. `motion.section` with
+  `initial="hidden" whileInView="visible" variants={getSectionReveal(...)}`,
+  everywhere. Under `prefers-reduced-motion` it degrades to an **opacity-only
+  fade** (no `y`) — arrival without movement. **Gotcha (fixed):**
+- **Text reveal** — the one choreographed *type* moment per screen. Words (or
+  authored lines) **clip-rise** from behind their own baseline inside an
+  `overflow-hidden` wrapper: `y 120%→0`, `0.5s`, stagger `0.06s`,
+  transform-only. Scoped to **`SectionHeading`'s name, the per-page
+  `Statement`, and `PageBanner`'s interior-page title** (Contact, IP Blogs —
+  `split="line"`, so the short title rises as one unit) — sub-heads, leads and
+  body stay on the plain section/stagger fade, so the reveal stays a signature,
+  not a tic. `RevealText`
+  (`getTextRevealContainer` / `getTextRevealPiece`); the tag keeps `aria-label`
+  and the pieces are `aria-hidden`. Deliberately vertical — never the retired
+  horizontal curtain-wipe. Under `prefers-reduced-motion` it collapses to one
+  opacity fade of the whole heading. The **Home hero H1** does the same move
+  but **CSS-only** (`.hero-headline-line`, `@keyframes hero-line-rise`) so the
+  hero stays a static server component that paints instantly.
+  `PageTransition`'s `<AnimatePresence initial={false}>` propagated
+  `PresenceContext.initial = false` into every nested `motion` and silently
+  killed all these reveals; the page body is now wrapped in
+  `<PresenceContext.Provider value={null}>`. If reveals ever go dead again,
+  check that wrapper first.
+- **Services media grid** — hover reveals the `summary` over a deepening scrim;
+  the image lifts ~4%. Static grid, nothing auto-advances (see Layout).
+- **Hover — on everything interactive.** Links: a colour shift to `accent` (an
+  optional underline may wipe in, but no rule under section headings). Cards /
+  rows / index items: `line→accent` border + `1px` lift + text to `ink`; media
+  cards deepen their scrim and reveal the subtitle. `cursor-pointer` on every
+  clickable. No scale-bounce, no shadow bloom, no custom cursors.
+- **Reveal values** — `y 24→0`, opacity `0→1`, `0.55s`, `easeOut`, `once`;
+  stagger `0.1s`. Under `prefers-reduced-motion` the reveal becomes an
+  **opacity-only fade** (no `y`) — motion-sensitive users still see content
+  arrive, they just don't see it move. The figures count-up and any parallax
+  are the only things fully suppressed.
+- **Stagger** — grids of ≤ 4 stagger children at `0.1s`.
+- **Retired:** the scroll-linked per-heading colour-wipe; the hero curtain-wipe
+  (`getWipeReveal` / `Reveal.tsx` — hero uses the standard staggered load
+  reveal now).
+
+**Guardrails** — no video backgrounds, no scroll-jacking (native scroll stays
+native), below-fold imagery lazy, the perf budget in the Quality floor is
+non-negotiable. Motion serves clarity — draws the eye to the one decisive move —
+never spectacle.
+
+## Quality & craft floor (build to it, don't announce it)
+
+- Responsive to 360px. No horizontal scroll on the body; wide content scrolls in
+  its own container.
+- Visible keyboard focus — `accent`, 2px, offset 2px — on every interactive
+  element. Never removed.
+- `prefers-reduced-motion` fully respected — reveals render final, scrub renders
+  final, hover (not motion-sickness-triggering) stays.
+- Contrast: `ink`/`ink-strong` on `paper` clears AA comfortably; `ink-soft` on
+  `paper` clears AA for body; `accent` on `paper` clears AA.
+- Tap targets ≥ 44px. Touch feedback within 100ms.
+- One hairline weight (`line`, 1px) sitewide — never mix border weights.
+- `text-wrap: balance` on headings; tabular numerals on all figures/dates;
+  widow/orphan control on lead paragraphs.
+- Zero layout shift — reserve every image box; matched fallback font metrics.
+- Optical alignment: the mark centres on adjacent cap-height, not bounding box.
 
 ## Token → Tailwind mapping
-`tailwind.config.ts` extends: `colors` (table above, functional palette only — the brand ramp is documentation-only until a component needs it), `fontFamily` (display/body/mono → CSS vars), `fontSize` (the type scale above: `display-xl`, `display-l`, `lead`, `h2`, `h3`, `body`, `small`, `mono-eyebrow`, each with its own line-height/tracking), `maxWidth.container`, `borderRadius.card: 4px`. No component may reference a color/size not defined here.
+
+`tailwind.config.ts` extends:
+- `colors` — the functional table above (incl. `ink-strong`, `accent-wash`). The
+  brand ramp stays documentation-only until `Mark` needs it.
+- `fontFamily` — `display` / `body` / `serif` → CSS vars, each with a real
+  fallback stack. (No `mono` — the eyebrow/label voice is `display`.)
+- `fontSize` — the scale table above: `display-2xl`, `display-hero`, `display-xl`,
+  `display-l`, `lead`, `h3`, `body`, `small`, `eyebrow`, each with its
+  line-height + tracking.
+  (`h2` token retired — section names use `display-xl`, sub-heads `display-l`.)
+- `maxWidth.container`, `borderRadius.card: 4px`, `borderRadius.hero: 28px`.
+
+No component references a colour or size not defined here.
+
+## Migration notes — where code is behind this doc
+
+**Phase 1 ✅** — tokens: `display-2xl`, `ink-strong`, `accent-wash`; display
+tracking/line-height retuned; `text-wrap: balance` on `h1–h3`.
+
+**Phase 2 ✅** — gradient headings killed: `--brand-gradient-text*` deleted,
+`ScrollColorHeading` deleted, every heading flat (`ink-strong` for display
+scale, `ink` for sub-heads); `Rule` deleted (unused after the underline was
+cut); palette refreshed (`paper` `#FCFBFA`, `surface` `#F4F3F1`, `line`
+`#DBD9D3`) away from the beige cast.
+
+**Phase 3 ✅** — `SectionHeading` is now just `heading` + `lead`: name →
+`display-xl` (h2) / `display-2xl` (h1) / `display-l` (h3), Poppins 700; **mark
+removed** (kept in header logo + footer); no underline; **no `01/02` index** (it
+was added then removed — read as templated). `h2` token retired; `text-h2` →
+`display-l` / `display-xl` (AboutApproach values, PageBanner).
+`SubServiceExplorer` names dropped to `h3` size.
+
+**Phase 3b ✅ — "What we do" media grid.** Folder stack replaced by a
+**pinwheel** `MediaCard` grid — all cards the same (reduced) height, but a
+narrow / wide / wide / narrow column rhythm (`sm:grid-cols-5`, col-spans
+2/3/3/2). Each card: image + `paper` name pill + circular arrow button +
+hover-reveal subtitle. `FolderStack.tsx` + `NodeExplorer.tsx` deleted.
+`borderRadius.media: 14px` added. Placeholders generated; real set pending
+(`IMAGE-PROMPTS.md § P2`).
+
+**Phase 4 ✅ (Home + About) — Statement, Stats, Hero.**
+- `Stats` ✅ — figures at `display-xl`, `useCountUp` restored; section moved
+  **above** AboutPreview on Home (proof first).
+- `Statement` ✅ — `components/ui/Statement.tsx`, Fraunces `display-2xl`,
+  `banded` opt-in surface. On Home (after WhyKAP, paper) + About (after
+  Approach). DUMMY copy — swap for real one-liners. **Service pages: not yet**
+  (need a short per-service line).
+- Hero ✅ — type-first: `brandLine` in Fraunces `display-xl`→`display-2xl`,
+  photo → right 35% desktop / short strip mobile, tagline `text-lead
+  text-paper/75` (was `paper/30`, invisible), one `--brand-gradient` hairline.
+  `getWipeReveal` + `Reveal.tsx` deleted. **No entrance animation** — plain
+  server component, paints instantly (SSR-safe for slow networks); PageIntro is
+  the load moment.
+
+**Phase 5 ✅ (mechanism) — Motion.**
+- **The scroll-reveal was dead site-wide** — `PageTransition`'s
+  `<AnimatePresence initial={false}>` suppressed `initial="hidden"` on every
+  nested `motion` via `PresenceContext`. Fixed by wrapping the page body in
+  `<PresenceContext.Provider value={null}>`. Reveals now fire (verified by
+  computed-opacity diff).
+- Values: `getSectionReveal` `y:24 / 0.55s`; reduced-motion → opacity-only fade;
+  `getStaggerContainer` `0.1`. `useCountUp` restored. `getWipeReveal` removed.
+- **Remaining:** hover audit (`line→accent` + lift on cards/rows/media,
+  `cursor-pointer` everywhere); the pinned hero scrub is dropped (hero is static
+  now).
+- `WhyKAP` gained a supporting image column (§ Section blocks) — less text.
+
+**Phase 5b ✅ — Home tonal breaks + hero sheen.**
+- `Stats` → `bg-surface` (the page's `surface` beat); `WhyKAP` → `bg-accent-deep`
+  nocturne panel, type/rules flipped to `paper` tones via new
+  `SectionHeading tone="onDark"`. `ServicesOverview` drops its `border-b` (the
+  paper→dark change is the divider). Rhythm: hero-card → surface → paper → paper
+  → dark → paper → paper → footer.
+- Hero `.hero-glow` — CSS-only ambient edge glow: masked ~3px ring, a constant
+  near-`paper` hairline + a bright chromatic arc (short brand-ramp sweep, lifted
+  toward `paper` with a near-white hotspot core) rotating the perimeter (~7s
+  `conic-gradient` via `@property`); a `-138deg` offset parks it at the top-left
+  corner at `t=0` so the sweep shows on first paint. Under reduced motion the arc
+  drops and only the hairline stays. Hero stays a server component. (Replaced the
+  earlier monochrome `.hero-sheen` — it read as invisible against the card.)
+- `SectionHeading` size/tone classes moved off `cn`/`tailwind-merge` onto plain
+  `clsx` — twMerge doesn't know the custom `display-*` / `ink-*` tokens and was
+  collapsing `text-display-xl` + `text-ink-strong`, dropping the font size.
+
+**Phase 5c ✅ — text reveal.** `RevealText` (`components/ui/RevealText.tsx`) +
+`getTextRevealContainer` / `getTextRevealPiece` (`lib/motion.ts`): word-level
+clip-rise (`y 120%→0`, `0.5s`, stagger `0.06s`, transform-only) wired into
+`SectionHeading`'s name and `Statement` (its child is now a `string`). The Home
+hero H1 gets the same move **CSS-only** (`.hero-headline-line` /
+`@keyframes hero-line-rise` in `globals.css`) so the hero stays a static server
+component. Reduced motion → one opacity fade of the heading / static hero.
+Sub-heads (`h3`), leads, body and eyebrows are deliberately left on the plain
+section/stagger fade.
+
+**Phase 5d ✅ — Contact / Blogs motion parity.** These two pages take their title
+from `PageBanner`, not `SectionHeading`, so they'd been sitting outside the text
+reveal. `PageBanner`'s title now runs through `RevealText` (`split="line"`);
+`PageBanner` stays a server component (the `RevealText` client leaf, same as
+`SectionHeading`). On Contact, the detail column (`ContactBlock`) and the form
+fields (`ContactForm` — previously motionless) now stagger in via
+`getStaggerContainer` + `getSectionReveal` children, subordinate to the banner
+reveal. Known: on a hard load the banner sits under the ~1.15s PageIntro overlay,
+so its reveal is only seen on client-side navigation into the page.
+
+**Phase 5e ✅ — hero rebalance.** The composition read left-heavy with a dead
+green void on the right: the photo was boxed to 35%, tinted `/55`, and scrim'd
+across 60% of that box, so only a ~12% sliver of cropped image showed. Fixes:
+photo → right ~46%, tint → `/30`, scrim → `w-[52%]` `via-accent/70`,
+`object-position` biased right (`object-[58%_50%]`) so the node cluster lands in
+the panel. The tagline moved to `max-w-[34rem]` (3 lines → 2 — measure only,
+`site.tagline` is shared with `<meta>` + footer). Tagline + CTA stay **one tight
+left-set unit** (`mt-10 lg:mt-14` below the headline, `gap-7` within): a brief
+experiment flinging the CTA to the bottom-right corner (`md:justify-end`) read
+as three disconnected fragments — reverted. Left-weight is inherent to a
+type-first hero; the lighter image tint is the counterweight. The static
+`--brand-gradient` hairline under the tagline was **removed** — at 1px on the
+card it never read, and the brand ramp is now scoped to the mark + the hero
+glow only. Headline column width unchanged (`lg:w-[90%]`) — it must stay 2
+lines.
+
+**Phase 5f ✅ — hero glow intensity.** The `.hero-glow` rim still read as
+near-invisible (a pale brand-ramp arc on a mid-dark card = pure luminance
+contrast). Reworked to a **white hotspot** rim (4px ring, thin cool/warm
+fringes only, brighter `/0.3` constant hairline) plus a new `.hero-glow-bloom`
+— a static teal→green `box-shadow` on the card blooming onto the `paper` page.
+The rim carries the motion, the bloom carries the "glow"; the bloom is static
+so it adds no per-frame cost (India / low-end target). `prefers-reduced-motion`
+still drops the rim arc; the bloom (not motion) stays.
+
+**Phase 6 — Imagery + craft.** Swap placeholders for the laboratory-nocturne set
+(`docs/IMAGE-PROMPTS.md`) as the user supplies files; wire service-page +
+domain-strip motifs; ambient `Mark` footer-only; `tabular-nums` on all
+figures/dates; drop-caps via `::first-letter`; widow control; final `lint` +
+build.
+
+## Changelog
+
+- Space Grotesk + Newsreader → all-sans → Poppins + Inter → Poppins (nav) +
+  Fraunces (assertion) + IBM Plex Sans (body) + IBM Plex Mono (data) →
+  **Fraunces → Spectral for the assertion voice** (hero H1 + Statement); the
+  `opsz`/`SOFT`/`WONK` variable-axis dial is gone (Spectral has named weights,
+  700 for both).
+- **IBM Plex Mono removed entirely** — no monospace on the site. The eyebrow /
+  label voice is now Poppins 500 (`font-display font-medium text-eyebrow
+  uppercase tracking-[0.12em]`). Three families: Poppins, IBM Plex Sans, Spectral.
+- Hero H1 → own `display-hero` ramp + two authored lines (`\n` in `brandLine`) +
+  near-full-width column overlapping the photo, so the headline holds 2 lines at
+  full size instead of wrapping to 4.
+- Statement block → own `display-statement` ramp + centred + widened
+  `max-w-[82rem]` measure, so a short claim holds one line at a real display
+  size (~68px at 1440); long sentences take an authored `\n` (→ `RevealText
+  split="line"`).
+- Corner-node "what we do" explorer → folder stack → **2×2 media-card grid**.
+- Stat tiles → **ruled figures grid** (then count-up removed).
+- Chip clouds → **ruled indexes**.
+- Gradient heading text + scroll colour-wipe → **flat headings**, no rule under
+  them.
+- Warm-beige `surface`/`paper` → cleaner near-neutral palette.
+- "Quiet restraint" → **precision as confidence**; big tight display headings;
+  one Statement per page.
+- DNA hero + optional `paper`-side line-art treatment → **discipline-neutral
+  nocturne photos**, one treatment only; molecule/DNA confined to the
+  `life-sciences` domain tile; domain strip promoted to in-scope to carry breadth
+  (client: the hero read as life-sciences-only).

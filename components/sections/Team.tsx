@@ -7,8 +7,9 @@ import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { getSectionReveal, sectionRevealViewport, useSafeReducedMotion } from "@/lib/motion";
 
-// Home-only founder card. The About page keeps its own narrative `about.team`
-// paragraph (data/about.ts) — that copy isn't duplicated here.
+// Leadership card on the About page, sitting above AboutNetwork's narrative
+// `about.team` paragraph (data/about.ts) — the named founder here, the wider
+// team described there, no duplicated copy.
 export default function Team() {
   const prefersReducedMotion = useSafeReducedMotion();
   const founder = getFounder();
@@ -24,7 +25,6 @@ export default function Team() {
       variants={getSectionReveal(prefersReducedMotion)}
     >
       <Container className="flex flex-col gap-10">
-        {/* DUMMY heading copy */}
         <SectionHeading heading="Leadership" level="h2" />
         <div className="flex flex-col gap-6 rounded-card border border-line bg-surface p-6 sm:flex-row sm:items-center sm:gap-8 sm:p-8">
           <Image
@@ -36,7 +36,7 @@ export default function Team() {
           />
           <div className="flex flex-col gap-2">
             <span className="font-display text-h3 font-semibold text-ink">{founder.name}</span>
-            <span className="font-mono text-mono-eyebrow uppercase tracking-[0.12em] text-ink-soft">
+            <span className="font-display font-medium text-eyebrow uppercase tracking-[0.12em] text-ink-soft">
               {founder.role}
             </span>
             <p className="max-w-prose font-body text-body text-ink-soft">{founder.bio}</p>

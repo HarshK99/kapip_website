@@ -14,9 +14,11 @@ import {
 export default function AboutApproach() {
   const prefersReducedMotion = useSafeReducedMotion();
 
+  // bg-surface gives the About page its one tonal beat around the values
+  // block (DESIGN.md — Layout). The fill is the divider, so no border-b.
   return (
     <motion.section
-      className="border-b border-line py-16 md:py-24"
+      className="bg-surface py-16 md:py-24"
       initial="hidden"
       whileInView="visible"
       viewport={sectionRevealViewport}
@@ -36,7 +38,7 @@ export default function AboutApproach() {
               variants={getSectionReveal(prefersReducedMotion)}
               className="flex-1 py-4 first:pt-0 sm:py-0 sm:px-8 sm:first:pl-0 sm:last:pr-0"
             >
-              <span className="font-display text-h2 font-semibold tracking-tight text-ink">
+              <span className="font-display text-display-l font-bold text-ink-strong">
                 {value}
               </span>
             </motion.div>

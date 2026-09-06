@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { Poppins, Inter, IBM_Plex_Mono, Fraunces } from "next/font/google";
+import { Poppins, IBM_Plex_Sans, Spectral } from "next/font/google";
 import { site } from "@/data/site";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppFab from "@/components/layout/WhatsAppFab";
+import PageIntro from "@/components/layout/PageIntro";
+import PageTransition from "@/components/layout/PageTransition";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -13,28 +15,25 @@ const poppins = Poppins({
   display: "swap",
 });
 
-const inter = Inter({
+// Body face. IBM Plex Sans is a humanist screen sans with engineering-drafting
+// heritage that pairs with Poppins without competing with it — part of a
+// coordinated Plex system alongside the mono below (DESIGN.md — Typography).
+const plexSans = IBM_Plex_Sans({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400", "500", "600"],
   variable: "--font-body",
   display: "swap",
 });
 
-const ibmPlexMono = IBM_Plex_Mono({
+// The assertion voice — used in exactly two places: the Home hero's H1 and the
+// once-per-page Statement block. Everything else stays on
+// font-display/font-body (DESIGN.md — Typography).
+// Spectral is a screen-first serif (Production Type) with low stroke contrast
+// and a calm, sturdy display cut — confident without drama. Only 700 is loaded:
+// both usages set it bold, nothing uses a lighter cut (perf — India context).
+const spectral = Spectral({
   subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-mono",
-  display: "swap",
-});
-
-// Used in exactly one place: the Home hero's H1. Everything else stays on
-// font-display/font-body/font-mono — see DESIGN.md's Typography section.
-// Loaded as the full variable font (no fixed `weight`) so the hero can dial
-// in Fraunces's opsz/SOFT/WONK axes via font-variation-settings for a
-// sharper, higher-contrast cut rather than its default softer text setting.
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  axes: ["opsz", "SOFT", "WONK"],
+  weight: ["700"],
   variable: "--font-hero-serif",
   display: "swap",
 });
@@ -52,11 +51,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${inter.variable} ${ibmPlexMono.variable} ${fraunces.variable} h-full`}
+      className={`${poppins.variable} ${plexSans.variable} ${spectral.variable} h-full`}
     >
       <body className="min-h-full flex flex-col">
+        <PageIntro />
         <Header />
-        <main className="flex flex-1 flex-col">{children}</main>
+        <main className="flex flex-1 flex-col">
+          <PageTransition>{children}</PageTransition>
+        </main>
         <Footer />
         <WhatsAppFab />
       </body>

@@ -11,7 +11,7 @@ export default function AboutHero() {
 
   return (
     <motion.section
-      className="border-b border-line bg-paper py-24 md:py-32"
+      className="border-b border-line bg-paper pt-14 pb-24 md:pt-20 md:pb-32"
       initial="hidden"
       whileInView="visible"
       viewport={sectionRevealViewport}

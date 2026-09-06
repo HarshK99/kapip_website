@@ -14,7 +14,7 @@ const stats: Stat[] = [
   { value: 500, suffix: "+", label: "Patents filed" }, // DUMMY
   { value: 120, suffix: "+", label: "Clients served" }, // DUMMY
   { value: 10, suffix: "+", label: "Years of experience" }, // DUMMY
-  { value: 15, suffix: "+", label: "Jurisdictions" }, // DUMMY
+  { value: 90, suffix: "%", label: "Patent grant rate" }, // DUMMY
 ];
 
 // ---- Access layer (import this, not the array) ----

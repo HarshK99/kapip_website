@@ -21,7 +21,8 @@ export type Site = {
   tagline: string;
   /** Short positioning statement — the Home hero's big headline. Not the
       full tagline sentence (too long to read well at hero display size);
-      keep this to a handful of words. */
+      keep this to a handful of words. A `\n` is an intentional line break in
+      the hero (the headline is meant to read as two balanced lines). */
   brandLine: string;
   /** E.164, used for tel: — DUMMY */
   phone: string;
@@ -46,14 +47,14 @@ export type Site = {
 export const site: Site = {
   name: "KAP IP",
   tagline: "We help you search, draft, file, and defend the ideas that make your business valuable",
-  brandLine: "Patent and IP solutions for innovators worldwide",
+  brandLine: "Patent and IP solutions\nfor innovators worldwide",
   phone: "+910000000000", // DUMMY — replace with real E.164 number
   whatsapp: "910000000000", // DUMMY — digits only, country code + number
-  email: "hello@example.com", // DUMMY — awaiting real email
+  email: "contact@kapip.in",
   offices: [
     {
       label: "Registered Office",
-      line1: "1402, A Block, Royal Aawas Tirupati",
+      line1: "A-1402, Royal Aawas Tirupati",
       line2: "Royal Chowk, near Royal Global University, Betkuchi",
       city: "Guwahati",
       state: "Assam",
@@ -70,12 +71,14 @@ export const site: Site = {
       country: "India",
     },
   ],
-  hours: "Mon–Fri, 10:00–18:00 IST", // DUMMY
+  hours: "Mon–Fri, 9:00 AM – 6:00 PM IST",
   web3formsKey: "REPLACE_WITH_WEB3FORMS_ACCESS_KEY", // DUMMY
   nav: [
     { label: "Home", href: "/" },
     { label: "About", href: "/about" },
     { label: "Services", href: "/services" },
+    { label: "IP Blogs", href: "/ip-blogs" },
+    { label: "Patent Acts", href: "/patent-acts" },
     { label: "Contact", href: "/contact" },
   ],
   socials: {
@@ -84,6 +87,23 @@ export const site: Site = {
   },
   developer: "Dragun Labs",
 };
+
+// Structured form of `site.hours` for open/closed checks. Keep the two in
+// sync — the string above is what renders, this is what's reasoned about.
+export const businessHours = { days: [1, 2, 3, 4, 5], open: 9, close: 18 } as const;
+
+/** True when the current moment falls within business hours in IST,
+    regardless of the viewer's own timezone. */
+export function isOfficeOpenNow(now: Date = new Date()): boolean {
+  // Shift to IST (UTC+05:30) from whatever zone the viewer is in.
+  const ist = new Date(now.getTime() + (now.getTimezoneOffset() + 330) * 60_000);
+  const hour = ist.getHours() + ist.getMinutes() / 60;
+  return (
+    (businessHours.days as readonly number[]).includes(ist.getDay()) &&
+    hour >= businessHours.open &&
+    hour < businessHours.close
+  );
+}
 
 // ---- Access helpers (use these in components) ----
 export const telHref = () => `tel:${site.phone}`;

@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local screenshot helper output (scripts/shot.mjs)
+.shots/
+
+# stale next build dirs
+.next.stale-*/
+
+# secrets / API tokens (never commit)
+toke.txt
+*.token

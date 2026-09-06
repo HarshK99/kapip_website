@@ -7,6 +7,12 @@ type ButtonAsButton = {
   href?: undefined;
   variant?: Variant;
   icon?: boolean;
+  // Opt-in animated border ring (app/globals.css → .cta-shimmer) for the one
+  // action a screen most wants clicked — currently just the header's
+  // Contact CTA. Not a variant: it's a flourish on top of `primary`, not a
+  // different look, and it stays off everywhere else so it keeps meaning
+  // "this one" instead of becoming ambient decoration.
+  shimmer?: boolean;
   className?: string;
   children: ReactNode;
 } & Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className">;
@@ -15,6 +21,7 @@ type ButtonAsAnchor = {
   href: string;
   variant?: Variant;
   icon?: boolean;
+  shimmer?: boolean;
   className?: string;
   children: ReactNode;
 } & Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "className" | "href">;
@@ -27,9 +34,9 @@ const variantClasses: Record<Variant, string> = {
 };
 
 // Trailing directional glyph, opt-in via `icon` — reused wherever a CTA
-// wants the "action with direction" affordance (header CTA, hero CTA,
-// NodeExplorer's active node, ...). Exported so it's the single source of
-// this glyph rather than redrawn per call site.
+// wants the "action with direction" affordance (header CTA, hero CTA, ...).
+// Exported so it's the single source of this glyph rather than redrawn per
+// call site.
 export function ButtonIcon() {
   return (
     <span
@@ -52,6 +59,7 @@ export function ButtonIcon() {
 export default function Button({
   variant = "primary",
   icon = false,
+  shimmer = false,
   className,
   children,
   href,
@@ -59,6 +67,7 @@ export default function Button({
 }: ButtonProps) {
   const classes = cn(
     "inline-flex min-h-11 items-center justify-center gap-2 rounded-card px-5 font-display text-small font-medium transition-colors",
+    shimmer && "relative",
     variantClasses[variant],
     className
   );
@@ -67,6 +76,9 @@ export default function Button({
     <>
       <span>{children}</span>
       {icon ? <ButtonIcon /> : null}
+      {shimmer ? (
+        <span className="cta-shimmer pointer-events-none absolute inset-0 rounded-card" aria-hidden="true" />
+      ) : null}
     </>
   );
 

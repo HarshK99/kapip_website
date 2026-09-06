@@ -18,7 +18,7 @@ export default function ServicesHub() {
 
   return (
     <motion.section
-      className="py-24 md:py-32"
+      className="pt-14 pb-24 md:pt-20 md:pb-32"
       initial="hidden"
       whileInView="visible"
       viewport={sectionRevealViewport}

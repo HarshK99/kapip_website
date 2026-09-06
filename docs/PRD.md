@@ -26,14 +26,16 @@ Confirmed: **page per service, sub-services as sections within.**
 /services/trademarks      Trademarks   (subs TBD — schema ready, renders 0..n)
 /services/copyrights      Copyrights   (subs TBD)
 /services/designs         Designs / Industrial Designs (subs TBD)
+/ip-blogs                 IP Blogs (placeholder)
+/patent-acts              Patent Acts (placeholder)
 /contact                  Contact
 ```
 
 Service pages are generated from `data/services.ts` via `generateStaticParams` — one route file, four (or more) static pages. Adding a service = adding a data entry, no new route file.
 
-**Future, not built now:** `/insights` (articles/resources). Nav is structured so it can slot in without rework. Do not build it.
+**Placeholder routes:** `/ip-blogs` and `/patent-acts` are present in the site navigation with placeholder content. Their full content and page structures will be defined separately.
 
-**Nav:** Home · About · Services (with dropdown/expand to the 4 on desktop; grouped in mobile menu) · Contact. Persistent WhatsApp affordance on mobile.
+**Nav:** Home · About · Services (with dropdown/expand to the 4 on desktop; grouped in mobile menu) · IP Blogs · Patent Acts · Contact. Persistent WhatsApp affordance on mobile.
 
 ### Promotion path (why subs are explorer items, not pages, for now)
 Each sub-service carries a `slug` and self-contained content in the data. Rendered today as an item in a sidebar + detail explorer within its parent service page (`SubServiceExplorer.tsx` — sidebar nav on the left, selected sub-service's content on the right). When real copy makes a sub-service substantial enough to rank on its own, it can be promoted to `/services/patents/search-analytics` by adding a nested route that reads the same sub-service object — **zero data restructure**. Build for this; don't build it yet.
@@ -146,10 +148,10 @@ Fields below are dummy until checked off. When real content arrives, it maps 1:1
 - [ ] Confirm forbidden-terms list for `leak-check` (likely empty for this site)
 
 ## 7. Non-goals (v1)
-No blog/CMS, no client portal, no search, no i18n, no calendar/booking, no analytics beyond a lightweight script if requested later, no animations beyond the restrained set in DESIGN.md. **Stats are now in-scope** (Home numbers/stats strip, §4) — this reverses the earlier "no stat-counter theatrics" position; the change is a restrained, once-triggered count-up per `DESIGN.md`, not a dashboard.
+No blog CMS, no client portal, no search, no i18n, no calendar/booking, no analytics beyond a lightweight script if requested later, no animations beyond the restrained set in DESIGN.md. `/ip-blogs` is currently a placeholder page only. **Stats are now in-scope** (Home numbers/stats strip, §4) — this reverses the earlier "no stat-counter theatrics" position; the change is a restrained, once-triggered count-up per `DESIGN.md`, not a dashboard.
 
 ## 8. Acceptance
-- `npm run build` produces `out/` with all 8 pages statically rendered.
+- `npm run build` produces `out/` with all 10 pages statically rendered.
 - Lighthouse mobile: performance and accessibility strong; no oversized images.
 - No hardcoded copy or contact info in components (all via data layer).
 - Adding a service or sub-service requires only a data edit.

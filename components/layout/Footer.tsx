@@ -59,7 +59,7 @@ export default function Footer() {
         <div className="flex flex-col gap-4">
           {contactItems.map((item) => (
             <div key={item.label} className="flex flex-col gap-1">
-              <span className="font-mono text-mono-eyebrow uppercase tracking-[0.12em] text-paper/50">
+              <span className="font-display font-medium text-eyebrow uppercase tracking-[0.12em] text-paper/50">
                 {item.label}
               </span>
               <a
@@ -72,7 +72,7 @@ export default function Footer() {
           ))}
 
           <div className="flex flex-col gap-1">
-            <span className="font-mono text-mono-eyebrow uppercase tracking-[0.12em] text-paper/50">
+            <span className="font-display font-medium text-eyebrow uppercase tracking-[0.12em] text-paper/50">
               Address
             </span>
             <p className="font-body text-body text-paper/80">{formattedAddress(site.offices[0])}</p>
@@ -80,7 +80,7 @@ export default function Footer() {
 
           {site.hours ? (
             <div className="flex flex-col gap-1">
-              <span className="font-mono text-mono-eyebrow uppercase tracking-[0.12em] text-paper/50">
+              <span className="font-display font-medium text-eyebrow uppercase tracking-[0.12em] text-paper/50">
                 Hours
               </span>
               <p className="font-body text-body text-paper/80">{site.hours}</p>
@@ -90,7 +90,7 @@ export default function Footer() {
 
         <nav
           aria-label="Footer"
-          className="flex flex-col gap-2 font-mono text-mono-eyebrow uppercase tracking-[0.12em] text-paper/70"
+          className="flex flex-col gap-2 font-display font-medium text-eyebrow uppercase tracking-[0.12em] text-paper/70"
         >
           {site.nav.map((item) => (
             <Link key={item.href} href={item.href} className="transition-colors hover:text-paper">

@@ -16,10 +16,10 @@ export type Person = {
 
 const people: Person[] = [
   {
-    name: "REPLACE_WITH_FOUNDER_NAME", // DUMMY
+    name: "Poonam Chetry", // DUMMY
     role: "Founder & Managing Partner", // DUMMY
     image: "/images/team/founder.png", // DUMMY placeholder photo
-    bio: "A short founder bio goes here — background, focus areas, and what drives the firm's approach to IP. Replace with real copy on content handover.", // DUMMY
+    bio: "Poonam leads KAP IP Services. She has spent over a decade working with scientists, startups, and research institutions on patent strategy across biotechnology, pharmaceuticals, and engineering, handling portfolios from first filing through prosecution in multiple jurisdictions. Her focus is careful drafting and filing decisions that match each client's commercial priorities.", // DUMMY
   },
 ];
 

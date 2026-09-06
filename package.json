@@ -11,6 +11,7 @@
     "optimize-images": "node scripts/optimize-images.mjs",
     "placeholders": "tsx scripts/placeholder-images.mjs",
     "placeholder-team": "tsx scripts/placeholder-team-photos.mjs",
+    "placeholder-blog": "tsx scripts/placeholder-blog.mjs",
     "sync-logo": "node scripts/sync-logo.mjs"
   },
   "dependencies": {
@@ -28,6 +29,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
+    "playwright": "^1.62.1",
     "sharp": "^0.34.5",
     "tailwindcss": "^4",
     "tsx": "^4.23.0",

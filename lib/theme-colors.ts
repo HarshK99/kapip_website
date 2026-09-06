@@ -4,8 +4,9 @@
 // tailwind.config.ts if those tokens ever change.
 export const themeColors = {
   ink: "#14171A",
+  inkStrong: "#0A0C0E",
   inkSoft: "#4A5158",
-  paper: "#FBFAF7",
+  paper: "#FCFBFA",
   // Decorative brand ramp — see tailwind.config.ts brand-* colors. Provisional.
   brandIndigo: "#1B2C74",
   brandTeal: "#14827A",

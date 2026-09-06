@@ -3,27 +3,216 @@
 
 @layer base {
   :root {
-    /* Decorative brand ramp gradient — logo/signature mark, one hero accent,
-       thin dividers/underlines only. Never behind body text. Provisional
-       until synced to the final logo (DESIGN.md — Palette). */
+    /* Decorative brand ramp gradient — the logo/signature mark and the one
+       hero accent rule ONLY. Never text, never a background, never a section
+       fill. Provisional until synced to the final logo (DESIGN.md — Palette).
+       (The former --brand-gradient-text* variants are removed — headings are
+       flat ink now.) */
     --brand-gradient: linear-gradient(120deg, #1b2c74 0%, #14827a 38%, #2e9e5b 68%, #aec61c 100%);
-    /* Text-safe variant — brand-lime dropped (1.85:1 against paper, fails
-       AA). Only these 3 stops clear the large-text 3:1 floor. Use this, not
-       --brand-gradient, for any text fill (DESIGN.md — Palette). */
-    --brand-gradient-text: linear-gradient(120deg, #1b2c74 0%, #14827a 45%, #2e9e5b 100%);
-    /* On-accent variant — for gradient text sitting on the dark `accent`
-       panel (the Home hero), not `paper`. The trim inverts: brand-indigo is
-       the one that fails here (dark-on-dark), so it's dropped instead of
-       lime; brand-lime (light-on-dark) is exactly what reads well against a
-       dark background. teal → green → lime only. */
-    --brand-gradient-text-on-accent: linear-gradient(120deg, #14827a 0%, #2e9e5b 50%, #aec61c 100%);
   }
 
   body {
     @apply bg-paper text-ink font-body antialiased;
   }
 
+  /* No orphaned heading lines (DESIGN.md — Quality & craft floor). */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  /* Native form controls don't reliably inherit the page font on their
+     own — <option>'s popup list is rendered outside normal CSS
+     inheritance in several browsers, and autofill re-applies its own UA
+     font on top of anything set elsewhere. Setting it explicitly here
+     once is the root fix: every input/select/textarea/button gets the
+     right font by default without needing its own font-body/font-display
+     class, and any component that *does* set one (Button.tsx's
+     font-display, ContactForm's explicit font-body) still wins — Tailwind
+     utilities sit in a later cascade layer than this base-layer rule, so
+     they override it regardless of selector specificity. */
+  button,
+  input,
+  select,
+  textarea,
+  optgroup,
+  option {
+    font-family: var(--font-body);
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill {
+    font-family: var(--font-body);
+    /* Mirrors the `ink` token (tailwind.config.ts) — autofill ignores
+       `color`, only `-webkit-text-fill-color` overrides its own text color. */
+    -webkit-text-fill-color: #14171a;
+    transition: background-color 9999s ease-in-out 0s;
+  }
+
   :focus-visible {
     @apply outline-accent outline-2 outline-offset-2;
+  }
+
+  /* Home hero — ambient edge glow. Two parts, both subordinate to the type:
+
+     1. `.hero-glow` — the running shimmer. A rim masked to a ~4px border ring:
+        a constant near-`paper` hairline outline plus one bright arc with a
+        **pure-white hotspot core** and only thin cool/warm fringes (not the
+        full pastel ramp — it should read as a light running around the edge,
+        not a rainbow). Runs the perimeter on a slow loop (rotating conic
+        gradient). The `-138deg` offset parks the arc at the top-left corner
+        at t=0 so the sweep is already in view on first paint, before any
+        scroll. The animated ring is a thin masked band, so the per-frame
+        repaint is negligible. Under reduced motion the arc is dropped — the
+        constant hairline stays.
+     2. `.hero-glow-bloom` — a static soft `box-shadow` on the card in
+        teal→green (hues near the card's own, so it reads as the card glowing,
+        not a foreign colour), blooming a few px onto the `paper` page. Static,
+        so zero per-frame cost; it carries the "glow" while the rim carries the
+        motion. */
+  .hero-glow {
+    padding: 4px;
+    background:
+      linear-gradient(rgb(252 251 250 / 0.3), rgb(252 251 250 / 0.3)),
+      conic-gradient(
+        from calc(var(--hero-glow-angle) - 138deg),
+        transparent 0deg,
+        transparent 8deg,
+        rgb(190 210 226 / 0.5) 40deg,
+        rgb(240 246 248 / 0.92) 76deg,
+        rgb(255 255 255 / 1) 94deg,
+        rgb(242 248 240 / 0.92) 112deg,
+        rgb(212 226 156 / 0.5) 148deg,
+        transparent 186deg,
+        transparent 360deg
+      );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: hero-glow-spin 7s linear infinite;
+  }
+
+  .hero-glow-bloom {
+    box-shadow:
+      0 0 42px -8px rgb(20 130 122 / 0.32),
+      0 0 84px -20px rgb(46 158 91 / 0.22);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-glow {
+      animation: none;
+      background: linear-gradient(rgb(252 251 250 / 0.3), rgb(252 251 250 / 0.3));
+    }
+  }
+
+  /* Header — Contact CTA border shimmer. Same masked-ring technique as
+     `.hero-glow` (conic gradient cut to a thin band via mask-composite:
+     exclude), but scoped to the functional accent pair, not the brand ramp
+     — this marks "the one thing to click," not a brand moment. Mostly at
+     rest; a short bright arc sweeps once around the pill every ~5.5s and
+     settles back, rather than spinning continuously (Button's `shimmer`
+     prop — currently only the header's Contact CTA, desktop + mobile).
+     Under reduced motion it's dropped entirely; the button is plain fill. */
+  .cta-shimmer {
+    padding: 1.5px;
+    background: conic-gradient(
+      from calc(var(--cta-shimmer-angle) - 90deg),
+      transparent 0deg,
+      transparent 300deg,
+      rgb(10 63 51 / 0.9) 325deg,
+      rgb(252 251 250 / 0.95) 342deg,
+      rgb(14 92 74 / 0.9) 360deg
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: cta-shimmer-spin 5.5s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta-shimmer {
+      display: none;
+    }
+  }
+
+  /* Home hero — headline line reveal. Each authored line clip-rises from
+     behind its own baseline on load (and on client-nav remount, when
+     PageTransition re-keys the page). CSS-only, so the hero stays a static
+     server component and the type is in the DOM and painted the whole time —
+     this only transforms it, no layout shift (the wrapper masks the travel).
+     The `pb`/`-mb` pair reserves descender room inside the clip without
+     moving anything. Base delay lets the PageIntro overlay clear first on a
+     hard load. Under reduced motion the lines render in place. */
+  .hero-headline-line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.18em;
+    margin-bottom: -0.18em;
+  }
+
+  .hero-headline-line > span {
+    display: block;
+    animation: hero-line-rise 0.72s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .hero-headline-line:nth-child(1) > span {
+    animation-delay: 0.5s;
+  }
+
+  .hero-headline-line:nth-child(2) > span {
+    animation-delay: 0.62s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-headline-line > span {
+      animation: none;
+    }
+  }
+}
+
+@property --hero-glow-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes hero-glow-spin {
+  to {
+    --hero-glow-angle: 360deg;
+  }
+}
+
+@property --cta-shimmer-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* Held at 0deg for 80% of the cycle (the "rest" phase — the arc sits
+   parked), then completes one full sweep in the remaining 20% before the
+   loop resets. */
+@keyframes cta-shimmer-spin {
+  0%,
+  80% {
+    --cta-shimmer-angle: 0deg;
+  }
+  100% {
+    --cta-shimmer-angle: 360deg;
+  }
+}
+
+@keyframes hero-line-rise {
+  from {
+    transform: translateY(130%);
+  }
+  to {
+    transform: translateY(0);
   }
 }

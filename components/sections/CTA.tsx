@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
-import ScrollColorHeading from "@/components/ui/ScrollColorHeading";
 import { getSectionReveal, sectionRevealViewport, useSafeReducedMotion } from "@/lib/motion";
 
 export type CTAProps = {
@@ -27,9 +26,7 @@ export default function CTA({
     >
       <Container className="flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
         <div className="flex flex-col gap-2">
-          <ScrollColorHeading as="h2" className="font-display text-h2 font-semibold tracking-tight">
-            {heading}
-          </ScrollColorHeading>
+          <h2 className="font-display text-display-l font-bold text-ink-strong">{heading}</h2>
           <p className="max-w-prose font-body text-body text-ink-soft">{subtext}</p>
         </div>
         <Button href="/contact" variant="primary">

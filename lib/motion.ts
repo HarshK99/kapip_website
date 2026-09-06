@@ -34,19 +34,24 @@ const sectionRevealMotion: Variants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
+    transition: { duration: 0.55, ease: "easeOut" },
   },
 };
 
-const sectionRevealInstant: Variants = {
-  hidden: { opacity: 1, y: 0 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0 } },
+// Reduced motion still gets a gentle opacity fade — no transform, no
+// movement. Fades are broadly considered reduced-motion-safe; slides,
+// parallax, and count-ups are not.
+const sectionRevealReduced: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.35, ease: "easeOut" } },
 };
 
-export const sectionRevealViewport = { once: true, margin: "-40px" };
+// Fire a little later than default so the reveal is actually seen rather than
+// finishing before the element is properly on screen.
+export const sectionRevealViewport = { once: true, margin: "0px 0px -12% 0px" };
 
 export const getSectionReveal = (prefersReducedMotion: boolean): Variants =>
-  prefersReducedMotion ? sectionRevealInstant : sectionRevealMotion;
+  prefersReducedMotion ? sectionRevealReduced : sectionRevealMotion;
 
 const hoverLiftMotion: Variants = {
   rest: { y: 0 },
@@ -67,7 +72,7 @@ export const getHoverLift = (prefersReducedMotion: boolean): Variants =>
 // and inherit the "visible" state from this container.
 const staggerContainerMotion: Variants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.06 } },
 };
 
 const staggerContainerInstant: Variants = {
@@ -78,35 +83,57 @@ const staggerContainerInstant: Variants = {
 export const getStaggerContainer = (prefersReducedMotion: boolean): Variants =>
   prefersReducedMotion ? staggerContainerInstant : staggerContainerMotion;
 
-// Left-to-right wipe reveal: the element is fully clipped from the right
-// edge inward (nothing visible), then the clip boundary sweeps rightward
-// until the whole element shows — a "curtain sliding away" reveal rather
-// than a fade/slide. Used for the Home hero's on-load entrance (its own
-// card, then its staggered text) instead of the usual up-fade.
-const wipeRevealMotion: Variants = {
-  hidden: { clipPath: "inset(0% 100% 0% 0%)" },
-  visible: { clipPath: "inset(0% 0% 0% 0%)", transition: { duration: 0.5, ease: "easeOut" } },
+// Text reveal — the one choreographed "type rises into view" moment per screen
+// (DESIGN.md — Motion: one decisive move). Scoped to the primary section name
+// (SectionHeading), the per-page Statement, and PageBanner's interior-page
+// title; sub-heads, leads and body stay on the plain section/stagger fade. The
+// word (or authored line) clip-rises
+// from behind its own baseline inside an `overflow-hidden` wrapper — a
+// transform-only, GPU-composited move, deliberately vertical so it never reads
+// as the retired horizontal curtain-wipe. Consumed via `RevealText`.
+//
+// `container` orchestrates the stagger; `piece` is each word/line. Under
+// reduced motion `piece` degrades to an opacity-only fade (no transform) and
+// the stagger collapses to zero, so the whole heading just fades — matching
+// the section reveal's reduced behaviour.
+const textRevealContainerMotion: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.06, delayChildren: 0.04 } },
 };
 
-const wipeRevealInstant: Variants = {
-  hidden: { clipPath: "inset(0% 0% 0% 0%)" },
-  visible: { clipPath: "inset(0% 0% 0% 0%)", transition: { duration: 0 } },
+const textRevealContainerInstant: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0, delayChildren: 0 } },
 };
 
-export const getWipeReveal = (prefersReducedMotion: boolean): Variants =>
-  prefersReducedMotion ? wipeRevealInstant : wipeRevealMotion;
+export const getTextRevealContainer = (prefersReducedMotion: boolean): Variants =>
+  prefersReducedMotion ? textRevealContainerInstant : textRevealContainerMotion;
+
+const textRevealPieceMotion: Variants = {
+  // Travels more than 100% so descenders clear the masking wrapper (which
+  // carries a little `pb` for exactly that reason — see RevealText).
+  hidden: { y: "130%" },
+  visible: { y: "0%", transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+};
+
+const textRevealPieceReduced: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.3, ease: "easeOut" } },
+};
+
+export const getTextRevealPiece = (prefersReducedMotion: boolean): Variants =>
+  prefersReducedMotion ? textRevealPieceReduced : textRevealPieceMotion;
 
 // Counts up from 0 to `target` once the element scrolls into view (Home
-// stats strip). Reduced-motion-safe: renders the final value immediately
-// instead of animating. Returns a ref to attach to the counting element and
-// the current display value.
+// figures grid). Reduced-motion-safe: renders the final value immediately.
+// Returns a ref for the counting element and the current display value.
 export function useCountUp<T extends HTMLElement = HTMLElement>(
   target: number,
   prefersReducedMotion: boolean,
-  duration = 1.2
+  duration = 1.4
 ): { ref: RefObject<T | null>; value: number } {
   const ref = useRef<T | null>(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
+  const inView = useInView(ref, { once: true, margin: "0px 0px -12% 0px" });
   const [animatedValue, setAnimatedValue] = useState(0);
 
   useEffect(() => {

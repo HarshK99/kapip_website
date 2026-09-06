@@ -1,7 +1,6 @@
 import type { SubService } from "@/data/services";
 import ScrollspyExplorer, { type ScrollspyExplorerItem } from "@/components/ui/ScrollspyExplorer";
 import SectionHeading from "@/components/ui/SectionHeading";
-import ScrollColorHeading from "@/components/ui/ScrollColorHeading";
 
 export type SubServiceExplorerProps = {
   subServices: SubService[];
@@ -13,7 +12,7 @@ export default function SubServiceExplorer({ subServices }: SubServiceExplorerPr
     label: subService.name,
     content: (
       <div className="flex flex-col gap-8">
-        <SectionHeading heading={subService.name} lead={subService.precise} level="h2" />
+        <SectionHeading heading={subService.name} lead={subService.precise} level="h3" />
 
         <p className="max-w-prose font-body text-body text-ink-soft">{subService.plainIntro}</p>
 
@@ -21,9 +20,7 @@ export default function SubServiceExplorer({ subServices }: SubServiceExplorerPr
           <div className="flex flex-col gap-6">
             {subService.deliver.map((item) => (
               <div key={item.name} className="flex flex-col gap-1.5">
-                <ScrollColorHeading as="h3" className="font-display text-h3 font-semibold">
-                  {item.name}
-                </ScrollColorHeading>
+                <h3 className="font-display text-h3 font-semibold text-ink">{item.name}</h3>
                 <p className="max-w-prose font-body text-body text-ink-soft">
                   {item.description}
                 </p>
@@ -34,7 +31,7 @@ export default function SubServiceExplorer({ subServices }: SubServiceExplorerPr
 
         {subService.scope && subService.scope.length > 0 ? (
           <div className="flex flex-col gap-3">
-            <h3 className="font-mono text-mono-eyebrow uppercase tracking-[0.12em] text-ink-soft">
+            <h3 className="font-display font-medium text-eyebrow uppercase tracking-[0.12em] text-ink-soft">
               Scope
             </h3>
             <ul className="flex flex-col gap-2">
@@ -56,13 +53,13 @@ export default function SubServiceExplorer({ subServices }: SubServiceExplorerPr
 
         {subService.process && subService.process.length > 0 ? (
           <div className="flex flex-col gap-3">
-            <h3 className="font-mono text-mono-eyebrow uppercase tracking-[0.12em] text-ink-soft">
+            <h3 className="font-display font-medium text-eyebrow uppercase tracking-[0.12em] text-ink-soft">
               Process
             </h3>
             <ol className="grid gap-6 sm:grid-cols-2">
               {subService.process.map((step, index) => (
                 <li key={step} className="flex flex-col gap-2">
-                  <span className="font-mono text-mono-eyebrow text-accent">
+                  <span className="font-display font-medium text-eyebrow text-accent">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <span className="font-body text-body text-ink-soft">{step}</span>
