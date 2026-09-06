@@ -30,7 +30,7 @@ const MIN_SIZE_BYTES = 80 * 1024;
 // gets downscaled before re-encoding. withoutEnlargement means small
 // images are never upscaled.
 const MAX_WIDTH = 2000;
-const RASTER_EXTENSIONS = new Set([".png", ".jpg", ".jpeg"]);
+const RASTER_EXTENSIONS = new Set([".png", ".jpg", ".jpeg", ".webp"]);
 
 async function findRasterImages(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -53,6 +53,12 @@ async function compress(buffer, ext) {
     // setting that meaningfully shrinks photographic PNGs — plain lossless
     // recompression barely moves the needle on a photo.
     return pipeline.png({ quality: 80, effort: 10, palette: true }).toBuffer();
+  }
+  if (ext === ".webp") {
+    // Re-encodes webp against the pristine backup at a sane quality — source
+    // files exported from design tools routinely land near q100 and are ~10x
+    // heavier than they need to be. effort: 6 is sharp's max encoder effort.
+    return pipeline.webp({ quality: 80, effort: 6 }).toBuffer();
   }
   return pipeline.jpeg({ quality: 82, mozjpeg: true }).toBuffer();
 }
